@@ -1,34 +1,28 @@
 from tkinter import *
+from PIL import ImageTk, Image
 
-# Create object
+def change_img(btn, img1, img2):
+    if(btn.cget('image') == str(img1)):
+        btn.config(image=img2)
+    else:
+        btn.config(image=img1)
+    return btn
+def door1():
+    global btnDoor1
+    btnDoor1 = change_img(btnDoor1, door, door_active)
+
 root = Tk()
 
-# Adjust size
-root.geometry("400x400")
+root.geometry("1020x600")
 
-# Add image file
-bg = PhotoImage(file="back.jpg")
+app_backround = ImageTk.PhotoImage(Image.open("img/back.png").resize((1024, 600)))
+door = ImageTk.PhotoImage(Image.open("img/door.png").resize((60, 60)))
+door_active = ImageTk.PhotoImage(Image.open("img/door-active.png").resize((60, 60)))
 
-# Show image using label
-label1 = Label(root, image=bg)
+label1 = Label(root, image=app_backround)
 label1.place(x=0, y=0)
 
-label2 = Label(root, text="Welcome")
-label2.pack(pady=50)
+btnDoor1 = Button(root, text="", image=door, borderwidth=0, activebackground='#ffffff', background='#ffffff', relief=SUNKEN, command=door1)
+btnDoor1.place(x=90, y=120)
 
-# Create Frame
-frame1 = Frame(root)
-frame1.pack(pady=20)
-
-# Add buttons
-button1 = Button(frame1, text="Exit")
-button1.pack(pady=20)
-
-button2 = Button(frame1, text="Start")
-button2.pack(pady=20)
-
-button3 = Button(frame1, text="Reset")
-button3.pack(pady=20)
-
-# Execute tkinter
 root.mainloop()
