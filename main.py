@@ -49,6 +49,7 @@ btnCam6.place(x=510, y=520)
 cams = [btnCam1, btnCam2, btnCam3, btnCam4, btnCam5, btnCam6]
 
 def switchCam(camName, camInstance):
+    os.system(f"notify-send '{camName}'")
     for camVal in cams:
         camVal = disable_img(camVal, cam, cam_active)
     camInstance = change_img(camInstance, cam, cam_active)
