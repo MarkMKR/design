@@ -1,7 +1,7 @@
 from tkinter import *
 import asyncio
 from PIL import ImageTk, Image
-
+import cv2
 
 class App:
     async def exec(self):
@@ -23,7 +23,7 @@ class Window(Tk):
         label1.place(x=0, y=0)
 
         self.btnDoor1 = Button(self.root, text="", image=self.door, borderwidth=0, activebackground='#ffffff', background='#ffffff',
-                          relief=SUNKEN, command=lambda: self.loop.create_task(self.cam()))
+                          relief=SUNKEN, command=lambda: await self.cam())
         self.btnDoor1.place(x=90, y=120)
 
     async def show(self):
@@ -42,6 +42,23 @@ class Window(Tk):
         self.btnDoor1 = self.change_img(self.btnDoor1, self.door, self.door_active)
 
     async def cam(self):
-        pass
+        self.btnDoor1 = self.change_img(self.btnDoor1, self.door, self.door_active)
+        print('d');
+        vid = cv2.VideoCapture(0)
+        while (True):
+            # Capture the video frame
+            # by frame
+            ret, frame = vid.read()
+
+            # Display the resulting frame
+            name = 'frame'
+            cv2.namedWindow(name, cv2.WND_PROP_FULLSCREEN)
+            cv2.moveWindow(name, 1920, 0)
+            cv2.setWindowProperty(name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+            cv2.imshow(name, frame)
+            # the 'q' button is set as the
+            # quitting button you may use any
+            # desired button of your choice
+            cv2.waitKey(1)
 
 asyncio.run(App().exec())
