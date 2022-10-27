@@ -8,10 +8,12 @@ class App:
         self.window = Window(asyncio.get_event_loop())
         await self.window.show()
 
-
 class Window(Tk):
+
     def __init__(self, loop):
         self.loop = loop
+        self.name = 'frame'
+        self.status = False
         self.root = Tk()
         self.root.geometry("1020x600")
 
@@ -23,8 +25,11 @@ class Window(Tk):
         label1.place(x=0, y=0)
 
         self.btnDoor1 = Button(self.root, text="", image=self.door, borderwidth=0, activebackground='#ffffff', background='#ffffff',
-                          relief=SUNKEN, command=lambda: await self.cam())
+                          relief=SUNKEN, command=lambda: self.loop.create_task(self.camEnable(0)))
         self.btnDoor1.place(x=90, y=120)
+        self.btnDoor2 = Button(self.root, text="", image=self.door, borderwidth=0, activebackground='#ffffff', background='#ffffff',
+                          relief=SUNKEN, command=lambda: self.loop.create_task(self.camEnable(2)))
+        self.btnDoor2.place(x=160, y=120)
 
     async def show(self):
         while True:
@@ -41,24 +46,32 @@ class Window(Tk):
     async def door1(self):
         self.btnDoor1 = self.change_img(self.btnDoor1, self.door, self.door_active)
 
-    async def cam(self):
-        self.btnDoor1 = self.change_img(self.btnDoor1, self.door, self.door_active)
-        print('d');
-        vid = cv2.VideoCapture(0)
-        while (True):
-            # Capture the video frame
-            # by frame
-            ret, frame = vid.read()
+    async def camEnable(self, camName):
+        self.btnDoor2 = self.change_img(self.btnDoor2, self.door, self.door_active)
+        vid = cv2.VideoCapture(camName)
+        self.status = not self.status
+        if self.status != False:
+            while (True):
+                if self.status == False:
+                    break
+                ret, frame = vid.read()
+                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                cv2.moveWindow(self.name, 1920, 0)
+                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                cv2.imshow(self.name, frame)
 
-            # Display the resulting frame
-            name = 'frame'
-            cv2.namedWindow(name, cv2.WND_PROP_FULLSCREEN)
-            cv2.moveWindow(name, 1920, 0)
-            cv2.setWindowProperty(name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-            cv2.imshow(name, frame)
-            # the 'q' button is set as the
-            # quitting button you may use any
-            # desired button of your choice
-            cv2.waitKey(1)
+                cv2.waitKey(1)
+                await asyncio.sleep(.1)
+        else:
+            while (True):
+                if self.status == True:
+                    break
+                ret, frame = vid.read()
+                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                cv2.moveWindow(self.name, 1920, 0)
+                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                cv2.imshow(self.name, frame)
+                cv2.waitKey(1)
+                await asyncio.sleep(.1)
 
 asyncio.run(App().exec())
