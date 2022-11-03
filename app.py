@@ -36,10 +36,12 @@ class Window(Tk):
         self.name = 'frame'
         self.status = False
         self.root = Tk()
+        self.root.attributes("-fullscreen", True)
         self.root.geometry("1020x600")
+        self.root.config(background='#ffffff')
 
         self.app_backround = ImageTk.PhotoImage(Image.open("img/back.png").resize((1024, 600)))
-        self.label1 = Label(self.root, image=self.app_backround)
+        self.label1 = Label(self.root, image=self.app_backround, background='#ffffff')
         self.label1.place(x=0, y=0)
 
         self.img_father = WD_Images(self.root)
@@ -120,6 +122,7 @@ class Window(Tk):
     async def new(self):
         self.scenary = Toplevel()
         self.scenary.geometry("1020x600")
+        self.scenary.attributes("-fullscreen", True)
         self.scenary.config(background='#ffffff')
 
         self.btn_father_sc = WD_Button(self.scenary)
