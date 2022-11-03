@@ -15,7 +15,7 @@ root = Tk()
 
 root.geometry("1020x600")
 
-app_backround = ImageTk.PhotoImage(Image.open("back.png").resize((1024, 600)))
+app_backround = ImageTk.PhotoImage(Image.open("img/back.png").resize((1024, 600)))
 door = ImageTk.PhotoImage(Image.open("img/door.png").resize((60, 60)))
 door_active = ImageTk.PhotoImage(Image.open("img/door-active.png").resize((60, 60)))
 
