@@ -1,7 +1,9 @@
+from asyncio import Future
 from tkinter import *
 import asyncio
 from PIL import ImageTk, Image
 import cv2
+from pynput.keyboard import Key, Controller
 
 class App:
     async def exec(self):
@@ -32,11 +34,11 @@ class WD_Button(Tk):
 class Window(Tk):
 
     def __init__(self, loop):
+        self.keyboard = Controller()
         self.loop = loop
         self.name = 'frame'
         self.status = False
         self.root = Tk()
-        self.root.attributes("-fullscreen", True)
         self.root.geometry("1020x600")
         self.root.config(background='#ffffff')
 
@@ -57,7 +59,11 @@ class Window(Tk):
         self.btnDoor6 = self.btn_father.btn(self.img_father.door, lambda: self.loop.create_task( self.door(5)))
 
         self.btnCam1 = self.btn_father.btn(self.img_father.cam, lambda: self.loop.create_task(self.camEnable(0, self.btnCam1)))
-        self.btnCam2 = self.btn_father.btn(self.img_father.cam, lambda: self.loop.create_task(self.camEnable(0, self.btnCam2)))
+        self.btnCam2 = self.btn_father.btn(self.img_father.cam, lambda: self.loop.create_task(self.camEnable(1, self.btnCam2)))
+        self.btnCam3 = self.btn_father.btn(self.img_father.cam, lambda: self.loop.create_task(self.camEnable(2, self.btnCam3)))
+        self.btnCam4 = self.btn_father.btn(self.img_father.cam, lambda: self.loop.create_task(self.camEnable(3, self.btnCam4)))
+        self.btnCam5 = self.btn_father.btn(self.img_father.cam, lambda: self.loop.create_task(self.camEnable(4, self.btnCam5)))
+        self.btnCam6 = self.btn_father.btn(self.img_father.cam, lambda: self.loop.create_task(self.camEnable(5, self.btnCam6)))
 
         self.btnManual.place(x=20, y=20)
 
@@ -68,8 +74,12 @@ class Window(Tk):
         self.btnDoor5.place(x=330, y=535)#floor 1 l
         self.btnDoor6.place(x=750, y=535)#floor 1 r
 
-        self.btnCam2.place(x=160, y=120)
         self.btnCam1.place(x=90, y=120)
+        self.btnCam2.place(x=130, y=120)
+        self.btnCam3.place(x=170, y=120)
+        self.btnCam4.place(x=210, y=120)
+        self.btnCam5.place(x=250, y=120)
+        self.btnCam6.place(x=290, y=120)
 
         self.cams = [self.btnCam1, self.btnCam2]
         self.doors = [self.btnDoor1, self.btnDoor2, self.btnDoor3, self.btnDoor4, self.btnDoor5, self.btnDoor6]
@@ -95,29 +105,29 @@ class Window(Tk):
         self.switchCam(cam)
         vid = cv2.VideoCapture(camName, cv2.CAP_DSHOW)
         self.status = not self.status
-        if self.status != False:
-            while (True):
-                if self.status == False:
-                    break
-                # ret, frame = vid.read()
-                # cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                # cv2.moveWindow(self.name, 1920, 0)
-                # cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                # cv2.imshow(self.name, frame)
-                #
-                # cv2.waitKey(1)
-                await asyncio.sleep(.1)
-        else:
-            while (True):
-                if self.status == True:
-                    break
-                # ret, frame = vid.read()
-                # cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                # cv2.moveWindow(self.name, 1920, 0)
-                # cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                # cv2.imshow(self.name, frame)
-                # cv2.waitKey(1)
-                await asyncio.sleep(.1)
+        try:
+            if self.status != False:
+                while (True):
+                    if self.status == False:
+                        break
+                    ret, frame = vid.read()
+                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                    cv2.moveWindow(self.name, 1920, 0)
+                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                    cv2.imshow(self.name, frame)
+                    await asyncio.sleep(0.01)
+            else:
+                while (True):
+                    if self.status == True:
+                        break
+                    ret, frame = vid.read()
+                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                    cv2.moveWindow(self.name, 1920, 0)
+                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                    cv2.imshow(self.name, frame)
+                    await asyncio.sleep(0.01)
+        except:
+            await self.camEnable(camName, cam)
 
     async def new(self):
         self.scenary = Toplevel()
