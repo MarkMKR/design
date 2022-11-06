@@ -1,3 +1,4 @@
+import time
 from asyncio import Future
 from tkinter import *
 import asyncio
@@ -56,14 +57,16 @@ class WD_Button(Tk):
         self.root = root
 
     def btn(self, img, command):
-        return Button(self.root, text="", image=img, borderwidth=0, activebackground='#ffffff', background='#ffffff',
+        btn = Button(self.root, text="", image=img, borderwidth=0, activebackground='#ffffff', background='#ffffff',
                relief=SUNKEN, command=command)
+        btn.status = 0;
+        return btn;
 
 class Window(Tk):
 
     def __init__(self, loop):
         self.keyboard = Controller()
-        self.fixedByte = '0' * 32
+        # self.arduino = serial.Serial(port='COM5', baudrate=57600)
         self.loop = loop
         self.name = 'frame'
         self.status = False
@@ -87,7 +90,7 @@ class Window(Tk):
         self.btnDoor3 = self.btn_father.btn(self.img_father.door, lambda: self.loop.create_task( self.door(3, self.btnDoor3)))
         self.btnDoor1 = self.btn_father.btn(self.img_father.door, lambda: self.loop.create_task( self.door(1, self.btnDoor1)))
 
-        self.btnLed0 = self.btn_father.btn(self.img_father.led, lambda: self.loop.create_task( self.led(11, self.btnLed0)))
+        self.btnLed0 = self.btn_father.btn(self.img_father.led, lambda: self.loop.create_task( self.led(21, self.btnLed0)))
         self.btnLed1 = self.btn_father.btn(self.img_father.led, lambda: self.loop.create_task( self.led(9, self.btnLed1)))
         self.btnLed2 = self.btn_father.btn(self.img_father.led, lambda: self.loop.create_task( self.led(1, self.btnLed2)))
         self.btnLed3 = self.btn_father.btn(self.img_father.led, lambda: self.loop.create_task( self.led(10, self.btnLed3)))
@@ -101,18 +104,18 @@ class Window(Tk):
         self.btnLight1 = self.btn_father.btn(self.img_father.light, lambda: self.loop.create_task( self.light(8, self.btnLight1)))
         self.btnLight2 = self.btn_father.btn(self.img_father.light, lambda: self.loop.create_task( self.light(0, self.btnLight2)))
         self.btnLight3 = self.btn_father.btn(self.img_father.light, lambda: self.loop.create_task( self.light(44, self.btnLight3)))
-        self.btnLight4 = self.btn_father.btn(self.img_father.light, lambda: self.loop.create_task( self.light(15, self.btnLight4)))
+        self.btnLight4 = self.btn_father.btn(self.img_father.light, lambda: self.loop.create_task( self.light(45, self.btnLight4)))
         self.btnLight5 = self.btn_father.btn(self.img_father.light, lambda: self.loop.create_task( self.light(13, self.btnLight5)))
         self.btnLight6 = self.btn_father.btn(self.img_father.light, lambda: self.loop.create_task( self.light(4, self.btnLight6)))
         self.btnLight7 = self.btn_father.btn(self.img_father.light, lambda: self.loop.create_task( self.light(47, self.btnLight7)))
         self.btnLight8 = self.btn_father.btn(self.img_father.light, lambda: self.loop.create_task( self.light(46, self.btnLight8)))
 
-        self.btnSmoke0 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(12, self.btnSmoke0)))
-        self.btnSmoke1 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(8, self.btnSmoke1)))
-        self.btnSmoke2 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(0, self.btnSmoke2)))
-        self.btnSmoke3 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(44, self.btnSmoke3)))
-        self.btnSmoke4 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(15, self.btnSmoke4)))
-        self.btnSmoke5 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(13, self.btnSmoke5)))
+        self.btnSmoke0 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(6, self.btnSmoke0)))
+        self.btnSmoke1 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(7, self.btnSmoke1)))
+        self.btnSmoke2 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(8, self.btnSmoke2)))
+        self.btnSmoke3 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(9, self.btnSmoke3)))
+        self.btnSmoke4 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(10, self.btnSmoke4)))
+        self.btnSmoke5 = self.btn_father.btn(self.img_father.smoke, lambda: self.loop.create_task( self.smoke(11, self.btnSmoke5)))
 
         self.btnCam1 = self.btn_father.btn(self.img_father.cam, lambda: self.loop.create_task(self.camEnable(0, self.btnCam1)))
         self.btnCam2 = self.btn_father.btn(self.img_father.cam, lambda: self.loop.create_task(self.camEnable(1, self.btnCam2)))
@@ -123,11 +126,11 @@ class Window(Tk):
 
         self.btnFire1 = self.btn_father.btn(self.img_father.fire, lambda: self.loop.create_task(self.fire(16,31, self.btnFire1)))
         self.btnFire2 = self.btn_father.btn(self.img_father.fire, lambda: self.loop.create_task(self.fire(1,1, self.btnFire2)))
-        self.btnFire3 = self.btn_father.btn(self.img_father.fire, lambda: self.loop.create_task(self.fire(2,1, self.btnFire3)))
+        self.btnFire3 = self.btn_father.btn(self.img_father.fire, lambda: self.loop.create_task(self.fire(35,37, self.btnFire3)))
         self.btnFire4 = self.btn_father.btn(self.img_father.fire, lambda: self.loop.create_task(self.fire(3,1, self.btnFire4)))
         self.btnFire6 = self.btn_father.btn(self.img_father.fire, lambda: self.loop.create_task(self.fire(5,1, self.btnFire6)))
 
-        self.btnAlarm1 = self.btn_father.btn(self.img_father.alarm, lambda: self.loop.create_task(self.alarm(10, self.btnAlarm1)))
+        self.btnAlarm1 = self.btn_father.btn(self.img_father.alarm, lambda: self.loop.create_task(self.alarm(26, self.btnAlarm1)))
         self.btnAlarm2 = self.btn_father.btn(self.img_father.alarm, lambda: self.loop.create_task(self.alarm(24, self.btnAlarm2)))
         self.btnAlarm3 = self.btn_father.btn(self.img_father.alarm, lambda: self.loop.create_task(self.alarm(36, self.btnAlarm3)))
         self.btnAlarm4 = self.btn_father.btn(self.img_father.alarm, lambda: self.loop.create_task(self.alarm(29, self.btnAlarm4)))
@@ -140,7 +143,7 @@ class Window(Tk):
         self.btnVolumeUp = self.btn_father.btn(self.img_father.volumeUp, lambda: self.loop.create_task(self.volumeUp()))
         self.btnVolumeDown = self.btn_father.btn(self.img_father.volumeDown, lambda: self.loop.create_task(self.volumeDown()))
 
-
+        self.btnPanel3 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(23, self.btnPanel3)))
         self.btnPanel4 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(23, self.btnPanel4)))
         self.btnPanel5 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(28, self.btnPanel5)))
         self.btnPanel6 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(17, self.btnPanel6)))
@@ -215,13 +218,61 @@ class Window(Tk):
         self.btnVolumeDown.place(x=100, y=125)
 
         self.cams = [self.btnCam1, self.btnCam2]
-    def write_read(self,method, param1, param2):
-        messageLen = len(method) + len(str(param1)) + len(str(param2)) + 32
-        size = len(str(self.fixedByte))
-        mod_string = self.fixedByte[:size - len(str(messageLen))] + str(messageLen) + method + "\0" + str(param1) + "\0" + str(param2)
-        self.arduino.write(bytes(mod_string, 'utf-8'))
-        print(mod_string)
+    def ledSerial(self,method, param1, param2):
+        string = "<LEDWRITE" + "\0" + str(param1) + "\0" + str(param2) + ">"
+        self.arduino.write(bytes(string, 'utf-8'))
+        time.sleep(.5)
+        data = self.arduino.read_all()
+        print(data.decode())
+        self.arduino.write(bytes(string, 'utf-8'))
 
+    def fireSerial(self, param1, param2):
+        string = "<LEDFIREA" + "\0" + str(param1) + "\0" + str(param2) + ">"
+        self.arduino.write(bytes(string, 'utf-8'))
+        time.sleep(.5)
+        data = self.arduino.read_all()
+        print(data.decode())
+
+    def servo(self,method, param1):
+        string = "<"+ method + "\0" + str(param1)+">"
+        self.arduino.write(bytes(string, 'utf-8'))
+        time.sleep(.1)
+        data = self.arduino.read_all()
+        print(data.decode())
+        self.arduino.write(bytes(string, 'utf-8'))
+
+    def smokeSerial(self, param1):
+        string = "<SMOKE" + "\0" + str(param1)+">"
+        print(string)
+        self.arduino.write(bytes(string, 'utf-8'))
+        time.sleep(.1)
+        data = self.arduino.read_all()
+        print(data.decode())
+        self.arduino.write(bytes(string, 'utf-8'))
+
+
+    def blink(self,param1, param2, param3):
+        string = "<LEDBLINK" + "\0" + str(param1)+ "\0" + str(param2)+ "\0" + str(param3) + ">"
+        print(string)
+        self.arduino.write(bytes(string, 'utf-8'))
+        time.sleep(.1)
+        data = self.arduino.read_all()
+        print(data.decode())
+
+    def blackout(self):
+        string = "<BLACKOUT>"
+        print(string)
+        self.arduino.write(bytes(string, 'utf-8'))
+        time.sleep(.1)
+        data = self.arduino.read_all()
+        print(data.decode())
+    def default(self):
+        string = "<DEFAULT>"
+        print(string)
+        self.arduino.write(bytes(string, 'utf-8'))
+        time.sleep(.1)
+        data = self.arduino.read_all()
+        print(data.decode())
     async def show(self):
         while True:
             self.root.update()
@@ -266,7 +317,7 @@ class Window(Tk):
                     await asyncio.sleep(0.01)
         except:
             self.status = not self.status
-            self.camEnable(camName, cam)
+            self.loop.create_task(self.camEnable(camName, cam))
     async def new(self):
         self.scenary = Toplevel()
         self.scenary.geometry("1020x600")
@@ -283,42 +334,50 @@ class Window(Tk):
 
     async def door(self, index, door):
         self.change_img(door, self.img_father.door, self.img_father.door_active)
-        print('door' + str(index))
-        print(asyncio.Task.current_task())
+        door.status = not door.status
+        comand = 'SERVOOPEN' if door.status == 1 else 'SERVOCLOSE'
+        # self.servo(comand, index)
 
     async def led(self, index, led):
         self.change_img(led, self.img_father.led, self.img_father.led_active)
-        print('led' + str(index))
+        # self.ledSerial("LEDWRITE", index, 255)
 
     async def light(self, index, light):
         self.change_img(light, self.img_father.light, self.img_father.light_active)
-        print('light' + str(index))
+        # self.ledSerial("LEDWRITE", index, 0)
     async def smoke(self, index, smoke):
         self.change_img(smoke, self.img_father.smoke, self.img_father.smoke_active)
+        # self.smokeSerial(index)
         print('smoke' + str(index))
 
     async def fire(self, index1, index2, fire):
         self.change_img(fire, self.img_father.fire, self.img_father.fire_active)
+        # self.fireSerial(index1, index2)
         print('fire1' + str(index1)+ ' ===== fire2' + str(index2))
 
     async def alarm(self, index, alarm):
         self.change_img(alarm, self.img_father.alarm, self.img_father.alarm_active)
+        # self.blink(index, 100, 300)
         print('alarm' + str(index))
 
     async def hair(self, index, hair):
         self.change_img(hair, self.img_father.hair_dryer, self.img_father.hair_dryer_active)
+        # self.blink(index, 100, 300)
         print('hair' + str(index))
 
     async def panel(self, index, panel):
         self.change_img(panel, self.img_father.panel, self.img_father.panel_active)
+        # self.blink(index, 100, 300)
         print('panel' + str(index))
 
     async def volumeUp(self):
+        self.default()
         for i in range(5):
             pyautogui.press('volumeup')
             print('volume upl')
 
     async def volumeDown(self):
+        self.blackout()
         for i in range(5):
             pyautogui.press('volumedown')
             print('volume down')
