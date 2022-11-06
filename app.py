@@ -50,8 +50,15 @@ class WD_Images(Tk):
         self.panel = ImageTk.PhotoImage(Image.open("img/panel.png").resize((50, 50)))
         self.panel_active = ImageTk.PhotoImage(Image.open("img/panel-active.png").resize((50, 50)))
 
+        self.tree = ImageTk.PhotoImage(Image.open("img/tree.png").resize((50, 50)))
+        self.tree_active = ImageTk.PhotoImage(Image.open("img/tree-active.png").resize((50, 50)))
+
+        self.fireplace = ImageTk.PhotoImage(Image.open("img/fireplace.png").resize((50, 50)))
+        self.fireplace_active = ImageTk.PhotoImage(Image.open("img/fireplace-active.png").resize((50, 50)))
+
         self.volumeUp = ImageTk.PhotoImage(Image.open("img/sound-increase.png").resize((50, 50)))
         self.volumeDown = ImageTk.PhotoImage(Image.open("img/sound-decrease.png").resize((50, 50)))
+
 class WD_Button(Tk):
     def __init__(self, root):
         self.root = root
@@ -143,10 +150,14 @@ class Window(Tk):
         self.btnVolumeUp = self.btn_father.btn(self.img_father.volumeUp, lambda: self.loop.create_task(self.volumeUp()))
         self.btnVolumeDown = self.btn_father.btn(self.img_father.volumeDown, lambda: self.loop.create_task(self.volumeDown()))
 
+        self.btnFirepalce = self.btn_father.btn(self.img_father.fireplace, lambda: self.loop.create_task(self.fireplace(0, self.btnFirepalce)))
+        self.btnTree = self.btn_father.btn(self.img_father.tree, lambda: self.loop.create_task(self.tree(0, self.btnTree)))
+
         self.btnPanel3 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(23, self.btnPanel3)))
         self.btnPanel4 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(23, self.btnPanel4)))
         self.btnPanel5 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(28, self.btnPanel5)))
         self.btnPanel6 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(17, self.btnPanel6)))
+        self.btnPanel7 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(0, self.btnPanel7)))
 
 
         self.btnManual.place(x=20, y=20)
@@ -179,6 +190,9 @@ class Window(Tk):
         self.btnLight3.place(x=470, y=170)#floor 3 l
         self.btnLight4.place(x=470, y=315)#floor 3 l
         self.btnLight7.place(x=470, y=470)#floor 3 l
+
+        self.btnTree.place(x=915, y=365)#floor 3 l
+        self.btnFirepalce.place(x=915, y=305)#floor 3 l
 
         self.btnSmoke0.place(x=350, y=220)#floor 3 l
         self.btnSmoke1.place(x=860, y=220)#floor 3 l
@@ -213,6 +227,7 @@ class Window(Tk):
         self.btnPanel4.place(x=860, y=460)
         self.btnPanel5.place(x=860, y=305)
         self.btnPanel6.place(x=350, y=305)
+        self.btnPanel7.place(x=350, y=460)
 
         self.btnVolumeUp.place(x=30, y=125)
         self.btnVolumeDown.place(x=100, y=125)
@@ -331,6 +346,12 @@ class Window(Tk):
 
     async def scenary_close(self):
         self.scenary.destroy()
+
+    async def fireplace(self, index, fpalce):
+        self.change_img(fpalce, self.img_father.fireplace, self.img_father.fireplace_active)
+
+    async def tree(self, index, tree):
+        self.change_img(tree, self.img_father.tree, self.img_father.tree_active)
 
     async def door(self, index, door):
         self.change_img(door, self.img_father.door, self.img_father.door_active)
