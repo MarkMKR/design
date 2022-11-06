@@ -5,7 +5,7 @@ from PIL import ImageTk, Image
 import cv2
 from pynput.keyboard import Key, Controller
 import serial
-from pycaw.pycaw import AudioUtilities, ISimpleAudioVolume
+import pyautogui
 
 class App:
     async def exec(self):
@@ -48,6 +48,9 @@ class WD_Images(Tk):
 
         self.panel = ImageTk.PhotoImage(Image.open("img/panel.png").resize((50, 50)))
         self.panel_active = ImageTk.PhotoImage(Image.open("img/panel-active.png").resize((50, 50)))
+
+        self.volumeUp = ImageTk.PhotoImage(Image.open("img/sound-increase.png").resize((50, 50)))
+        self.volumeDown = ImageTk.PhotoImage(Image.open("img/sound-decrease.png").resize((50, 50)))
 class WD_Button(Tk):
     def __init__(self, root):
         self.root = root
@@ -134,6 +137,10 @@ class Window(Tk):
         self.btnHair5 = self.btn_father.btn(self.img_father.hair_dryer, lambda: self.loop.create_task(self.hair(34, self.btnHair5)))
         self.btnHair6 = self.btn_father.btn(self.img_father.hair_dryer, lambda: self.loop.create_task(self.hair(33, self.btnHair6)))
 
+        self.btnVolumeUp = self.btn_father.btn(self.img_father.volumeUp, lambda: self.loop.create_task(self.volumeUp()))
+        self.btnVolumeDown = self.btn_father.btn(self.img_father.volumeDown, lambda: self.loop.create_task(self.volumeDown()))
+
+
         self.btnPanel4 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(23, self.btnPanel4)))
         self.btnPanel5 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(28, self.btnPanel5)))
         self.btnPanel6 = self.btn_father.btn(self.img_father.panel, lambda: self.loop.create_task(self.panel(17, self.btnPanel6)))
@@ -204,6 +211,9 @@ class Window(Tk):
         self.btnPanel5.place(x=860, y=305)
         self.btnPanel6.place(x=350, y=305)
 
+        self.btnVolumeUp.place(x=30, y=125)
+        self.btnVolumeDown.place(x=100, y=125)
+
         self.cams = [self.btnCam1, self.btnCam2]
     def write_read(self,method, param1, param2):
         messageLen = len(method) + len(str(param1)) + len(str(param2)) + 32
@@ -230,30 +240,33 @@ class Window(Tk):
         self.change_img(camInstance, self.img_father.cam, self.img_father.cam_active)
 
     async def camEnable(self, camName, cam):
-        self.switchCam(cam)
-        vid = cv2.VideoCapture(camName, cv2.CAP_DSHOW)
-        self.status = not self.status
-        if self.status != False:
-            while (True):
-                if self.status == False:
-                    break
-                ret, frame = vid.read()
-                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                cv2.moveWindow(self.name, 1920, 0)
-                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                cv2.imshow(self.name, frame)
-                await asyncio.sleep(0.01)
-        else:
-            while (True):
-                if self.status == True:
-                    break
-                ret, frame = vid.read()
-                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                cv2.moveWindow(self.name, 1920, 0)
-                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                cv2.imshow(self.name, frame)
-                await asyncio.sleep(0.01)
-
+        try:
+            self.switchCam(cam)
+            vid = cv2.VideoCapture(camName, cv2.CAP_DSHOW)
+            self.status = not self.status
+            if self.status != False:
+                while (True):
+                    if self.status == False:
+                        break
+                    ret, frame = vid.read()
+                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                    cv2.moveWindow(self.name, 1920, 0)
+                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                    cv2.imshow(self.name, frame)
+                    await asyncio.sleep(0.01)
+            else:
+                while (True):
+                    if self.status == True:
+                        break
+                    ret, frame = vid.read()
+                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                    cv2.moveWindow(self.name, 1920, 0)
+                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                    cv2.imshow(self.name, frame)
+                    await asyncio.sleep(0.01)
+        except:
+            self.status = not self.status
+            self.camEnable(camName, cam)
     async def new(self):
         self.scenary = Toplevel()
         self.scenary.geometry("1020x600")
@@ -271,6 +284,7 @@ class Window(Tk):
     async def door(self, index, door):
         self.change_img(door, self.img_father.door, self.img_father.door_active)
         print('door' + str(index))
+        print(asyncio.Task.current_task())
 
     async def led(self, index, led):
         self.change_img(led, self.img_father.led, self.img_father.led_active)
@@ -297,14 +311,17 @@ class Window(Tk):
 
     async def panel(self, index, panel):
         self.change_img(panel, self.img_father.panel, self.img_father.panel_active)
-        sessions = AudioUtilities.GetAllSessions()
-        for session in sessions:
-            volume = session._ctl.QueryInterface(ISimpleAudioVolume)
-            if session.Process and session.Process.name() == "vlc.exe":
-                print("volume.GetMasterVolume(): %s" % volume.GetMasterVolume())
-                volume.SetMasterVolume(0.6, None)
         print('panel' + str(index))
 
+    async def volumeUp(self):
+        for i in range(5):
+            pyautogui.press('volumeup')
+            print('volume upl')
+
+    async def volumeDown(self):
+        for i in range(5):
+            pyautogui.press('volumedown')
+            print('volume down')
     def switch_light(self, lampIndx):
         pass #switch light
 
