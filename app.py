@@ -1,3 +1,4 @@
+import os
 import time
 from asyncio import Future
 from tkinter import *
@@ -65,8 +66,9 @@ class WD_Button(Tk):
 class Window(Tk):
 
     def __init__(self, loop):
+        self.volume = 50;
         self.keyboard = Controller()
-        # self.arduino = serial.Serial(port='COM5', baudrate=57600)
+        self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
         self.loop = loop
         self.name = 'frame'
         self.status = False
@@ -336,51 +338,51 @@ class Window(Tk):
         self.change_img(door, self.img_father.door, self.img_father.door_active)
         door.status = not door.status
         comand = 'SERVOOPEN' if door.status == 1 else 'SERVOCLOSE'
-        # self.servo(comand, index)
+        self.servo(comand, index)
 
     async def led(self, index, led):
         self.change_img(led, self.img_father.led, self.img_father.led_active)
-        # self.ledSerial("LEDWRITE", index, 255)
+        self.ledSerial("LEDWRITE", index, 255)
 
     async def light(self, index, light):
         self.change_img(light, self.img_father.light, self.img_father.light_active)
-        # self.ledSerial("LEDWRITE", index, 0)
+        self.ledSerial("LEDWRITE", index, 0)
     async def smoke(self, index, smoke):
         self.change_img(smoke, self.img_father.smoke, self.img_father.smoke_active)
-        # self.smokeSerial(index)
+        self.smokeSerial(index)
         print('smoke' + str(index))
 
     async def fire(self, index1, index2, fire):
         self.change_img(fire, self.img_father.fire, self.img_father.fire_active)
-        # self.fireSerial(index1, index2)
+        self.fireSerial(index1, index2)
         print('fire1' + str(index1)+ ' ===== fire2' + str(index2))
 
     async def alarm(self, index, alarm):
         self.change_img(alarm, self.img_father.alarm, self.img_father.alarm_active)
-        # self.blink(index, 100, 300)
+        self.blink(index, 100, 300)
         print('alarm' + str(index))
 
     async def hair(self, index, hair):
         self.change_img(hair, self.img_father.hair_dryer, self.img_father.hair_dryer_active)
-        # self.blink(index, 100, 300)
+        self.blink(index, 100, 300)
         print('hair' + str(index))
 
     async def panel(self, index, panel):
         self.change_img(panel, self.img_father.panel, self.img_father.panel_active)
-        # self.blink(index, 100, 300)
+        self.blink(index, 100, 300)
         print('panel' + str(index))
 
-    async def volumeUp(self):
-        self.default()
-        for i in range(5):
-            pyautogui.press('volumeup')
-            print('volume upl')
-
     async def volumeDown(self):
-        self.blackout()
-        for i in range(5):
-            pyautogui.press('volumedown')
-            print('volume down')
+        self.volume -= 10
+        if self.volume <= 9:
+            self.volume = 0;
+        os.system(f'amixer set Master {str(self.volume)}%')
+
+    async def volumeUp(self):
+        self.volume += 10
+        if self.volume >= 91:
+            self.volume = 100;
+        os.system(f'amixer set Master {str(self.volume)}%')
     def switch_light(self, lampIndx):
         pass #switch light
 
