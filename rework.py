@@ -35,7 +35,7 @@ class WD_Images(Tk):
         self.light = "img/light.png"
         self.light_active = "img/light-active.png"
 
-        self.smoke = "img/smoke.png"
+        self.smoke = "../img/smoke.png"
         self.smoke_active = "img/smoke-active.png"
 
         self.fire = "img/fire.png"
@@ -72,17 +72,15 @@ class WD_Button(Tk):
         self.root = root
 
     def btn(self, active, pasive, command, status):
-        self.active = active
-        self.pasive = pasive
-        name = self.pasive
+        name = pasive
         if status == 1:
-            name = self.active
-        print(name)
+            name = active
         image = ImageTk.PhotoImage(Image.open(name).resize((50, 50)))
-        btn = Button(self.root, text="", image=self.volumeDown, borderwidth=0, activebackground='#ffffff', background='#ffffff',
+        btn = Button(self.root, text="", image=image, borderwidth=0, activebackground='#ffffff', background='#ffffff',
                      relief=SUNKEN, command=command)
         btn.status = status;
-
+        btn.active = active
+        btn.pasive = pasive
         return btn;
 
 
