@@ -22,7 +22,10 @@ class WD_Images(Tk):
         self.root = root
 
         self.manual = "img/manual.png"
-        self.scenary = "img/scenary.png"
+        self.scenary_btn = "img/scenary.png"
+
+        self.scenary_1 = "img/scenary-1.png"
+        self.scenary_active_1 = "img/scenary-active-1.png"
 
         self.door = "img/door.png"
         self.door_active = "img/door-active.png"
@@ -71,8 +74,10 @@ class WD_Images(Tk):
 
         self.balon = "img/balon.png"
         self.balon_active = "img/balon-active.png"
-class WD_Button(Tk):
 
+        self.wilka = "img/wilka.png"
+        self.wilka_active = "img/wilka-active.png"
+class WD_Button(Tk):
     count = 0
     def __init__(self, root):
         self.root = root
@@ -99,7 +104,7 @@ class Window(Tk):
         self.volume = 50;
         self.keyboard = Controller()
         self.loop = loop
-        self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
+        self.arduino = serial.Serial(port='COM6', baudrate=57600)
         self.name = 'frame'
         self.status = False
         self.root = Tk()
@@ -114,7 +119,8 @@ class Window(Tk):
         self.btn_father = WD_Button(self.root)
 
         self.btnManual = self.btn_father.btn(self.img_father.manual, self.img_father.manual,
-                                             lambda: self.loop.create_task(self.new()), 0)
+                                             lambda: self.loop.create_task(self.new()), 0, 222,46)
+
         self.btnDoor5 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
                                             lambda: self.loop.create_task(self.door(5, self.btnDoor5)), 1)
         self.btnDoor2 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
@@ -216,7 +222,7 @@ class Window(Tk):
         self.btnAlarm6 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
                                              lambda: self.loop.create_task(self.alarm(20, self.btnAlarm6)), 0)
 
-        self.btnHair5 = self.btn_father.btn(self.img_father.hair_dryer, self.img_father.hair_dryer_active,
+        self.btnHair5 = self.btn_father.btn(self.img_father.wilka, self.img_father.wilka_active,
                                             lambda: self.loop.create_task(self.hair(34, self.btnHair5)), 0)
         self.btnHair6 = self.btn_father.btn(self.img_father.hair_dryer, self.img_father.hair_dryer_active,
                                             lambda: self.loop.create_task(self.hair(33, self.btnHair6)), 0)
@@ -246,10 +252,14 @@ class Window(Tk):
         self.btnFan = self.btn_father.btn(self.img_father.vent, self.img_father.vent_active, lambda: self.loop.create_task(self.fan(self.btnFan)), 0)
         self.btnBalon = self.btn_father.btn(self.img_father.balon, self.img_father.balon_active, lambda: self.loop.create_task(self.light(21, self.btnBalon)), 0)
         self.btnKotel = self.btn_father.btn(self.img_father.kotel, self.img_father.kotel_active, lambda: self.loop.create_task(self.alarm(17, self.btnKotel)), 0)
+        self.btnHot = self.btn_father.btn(self.img_father.kotel, self.img_father.kotel_active, lambda: self.loop.create_task(self.led(39, self.btnHot)), 0)
+
+
 
         self.btnTorch.place(x=915, y=220)  # floor 3 l
         self.btnFan.place(x=550, y=520)  # floor 3 l
         self.btnBalon.place(x=915, y=520)  # floor 3 l
+        self.btnHot.place(x=915, y=460)  # floor 3 l
         self.btnKotel.place(x=405, y=365)  # floor 3 l
 
 
@@ -325,7 +335,8 @@ class Window(Tk):
         self.btnVolumeUp.place(x=30, y=125)
         self.btnVolumeDown.place(x=100, y=125)
 
-        self.cams = [self.btnCam1, self.btnCam2]
+        self.cams = [self.btnCam6,self.btnCam5, self.btnCam4, self.btnCam3, self.btnCam2, self.btnCam1]
+        self.smokes = [self.btnSmoke5, self.btnSmoke4, self.btnSmoke3, self.btnSmoke2, self.btnSmoke0, self.btnSmoke1]
 
     def ledSerial(self, method, param1, param2):
         string = "<LEDWRITE" + "\0" + str(param1) + "\0" + str(param2) + ">"
@@ -435,16 +446,132 @@ class Window(Tk):
             self.status = not self.status
             self.loop.create_task(self.camEnable(camName, cam))
 
+    async def scenary_action_1(self, btn):
+        self.change_img(btn)
+        self.blackout()
+        for scen in self.scenaries:
+            scen["state"]="disable"
+        self.btnScenary["state"] = "disable"
+        ##############
+        await asyncio.sleep(5)
+        ##############
+        self.change_img(btn)
+        for scen in self.scenaries:
+            scen["state"]="active"
+        self.btnScenary["state"] = "active"
+        self.default()
+
+
+    async def scenary_action_1(self, btn):
+        self.change_img(btn)
+        self.blackout()
+        for scen in self.scenaries:
+            scen["state"]="disable"
+        self.btnScenary["state"] = "disable"
+        ##############
+        await asyncio.sleep(5)
+        ##############
+        self.change_img(btn)
+        for scen in self.scenaries:
+            scen["state"]="active"
+        self.btnScenary["state"] = "active"
+        self.default()
+
+
+    async def scenary_action_2(self, btn):
+        self.change_img(btn)
+        self.blackout()
+        for scen in self.scenaries:
+            scen["state"]="disable"
+        self.btnScenary["state"] = "disable"
+        ##############
+        await asyncio.sleep(5)
+        ##############
+        self.change_img(btn)
+        for scen in self.scenaries:
+            scen["state"]="active"
+        self.btnScenary["state"] = "active"
+        self.default()
+
+
+    async def scenary_action_3(self, btn):
+        self.change_img(btn)
+        self.blackout()
+        for scen in self.scenaries:
+            scen["state"]="disable"
+        self.btnScenary["state"] = "disable"
+        ##############
+        await asyncio.sleep(5)
+        ##############
+        self.change_img(btn)
+        for scen in self.scenaries:
+            scen["state"]="active"
+        self.btnScenary["state"] = "active"
+        self.default()
+
+    async def scenary_action_4(self, btn):
+        self.change_img(btn)
+        self.blackout()
+        for scen in self.scenaries:
+            scen["state"]="disable"
+        self.btnScenary["state"] = "disable"
+        ##############
+        await asyncio.sleep(5)
+        ##############
+        self.change_img(btn)
+        for scen in self.scenaries:
+            scen["state"]="active"
+        self.btnScenary["state"] = "active"
+        self.default()
+
+    async def scenary_action_5(self, btn):
+        self.change_img(btn)
+        self.blackout()
+        for scen in self.scenaries:
+            scen["state"]="disable"
+        self.btnScenary["state"] = "disable"
+        ##############
+        await asyncio.sleep(5)
+        ##############
+        self.change_img(btn)
+        for scen in self.scenaries:
+            scen["state"]="active"
+        self.btnScenary["state"] = "active"
+        self.default()
+
     async def new(self):
         self.scenary = Toplevel()
         self.scenary.geometry("1020x600")
-        self.scenary.attributes("-fullscreen", True)
         self.scenary.config(background='#ffffff')
+
+
 
         self.btn_father_sc = WD_Button(self.scenary)
 
-        self.btnScenary = self.btn_father_sc.btn(self.img_father.scenary,
-                                                 lambda: self.loop.create_task(self.scenary_close()))
+        self.scenary1 = self.btn_father_sc.btn(self.img_father.scenary_1, self.img_father.scenary_active_1,
+                                            lambda: self.loop.create_task(self.scenary_action_1(self.scenary1)), 0, 400, 50)
+        self.scenary1.place(x=300, y=100)  # floor 3 l
+
+        self.scenary2 = self.btn_father_sc.btn(self.img_father.scenary_1, self.img_father.scenary_active_1,
+                                            lambda: self.loop.create_task(self.scenary_action_2(self.scenary2)), 0, 400, 50)
+        self.scenary2.place(x=300, y=170)  # floor 3 l
+
+        self.scenary3 = self.btn_father_sc.btn(self.img_father.scenary_1, self.img_father.scenary_active_1,
+                                            lambda: self.loop.create_task(self.scenary_action_3(self.scenary3)), 0, 400, 50)
+        self.scenary3.place(x=300, y=240)  # floor 3 l
+
+        self.scenary4 = self.btn_father_sc.btn(self.img_father.scenary_1, self.img_father.scenary_active_1,
+                                            lambda: self.loop.create_task(self.scenary_action_4(self.scenary4)), 0, 400, 50)
+        self.scenary4.place(x=300, y=310)  # floor 3 l
+
+        self.scenary5 = self.btn_father_sc.btn(self.img_father.scenary_1, self.img_father.scenary_active_1,
+                                            lambda: self.loop.create_task(self.scenary_action_5(self.scenary5)), 0, 400, 50)
+        self.scenary5.place(x=300, y=380)  # floor 3 l
+
+        self.scenaries = [self.scenary1, self.scenary2, self.scenary3, self.scenary4, self.scenary5]
+
+        self.btnScenary = self.btn_father_sc.btn(self.img_father.scenary_btn,self.img_father.scenary_btn,
+                                                 lambda: self.loop.create_task(self.scenary_close()), 0, 222, 46)
         self.btnScenary.place(x=20, y=20)
 
     async def scenary_close(self):
@@ -478,8 +605,13 @@ class Window(Tk):
 
     async def smoke(self, index, smoke):
         self.change_img(smoke)
+        for smokeVal in self.smokes:
+            smokeVal["state"]="disabled"
         self.smokeSerial(index)
-        print('smoke' + str(index))
+        await asyncio.sleep(5)
+        self.change_img(smoke)
+        for smokeVal in self.smokes:
+            smokeVal["state"]="active"
 
     async def fire(self, index1, index2, fire):
         self.change_img(fire)
