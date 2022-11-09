@@ -560,8 +560,6 @@ class Window(Tk):
         ##############
         self.ledSerial('LEDWRITE', 8, 255)
         await asyncio.sleep(5)
-        self.smokeSerial(3)
-        await asyncio.sleep(5)
         self.fireSerial(41,40)
         await asyncio.sleep(1)
         self.ledSerial('LEDWRITE', 8, 0)
@@ -582,10 +580,10 @@ class Window(Tk):
         self.ledSerial('LEDWRITE', 40, 0)
         await asyncio.sleep(.2)
         self.ledSerial('LEDWRITE', 24, 0)
-        await asyncio.sleep(.2)
-        self.servo('SERVOCLOSE', 2)
         await asyncio.sleep(5)
         self.serialFan('FANOFF')
+        await asyncio.sleep(1)
+        self.servo('SERVOCLOSE', 2)
         await asyncio.sleep(10)
         for scen in self.scenaries:
             scen["state"]="active"
