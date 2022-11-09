@@ -102,6 +102,8 @@ class WD_Button(Tk):
 class Window(Tk):
 
     def __init__(self, loop):
+        self.mixer = pygame.mixer.init() #Initialzing pyamge mixer
+        self.alarmStatus = 0
         self.volume = 50;
         self.keyboard = Controller()
         self.loop = loop
@@ -211,7 +213,7 @@ class Window(Tk):
                                             lambda: self.loop.create_task(self.fire(38, 42, self.btnFire6)), 0)
 
         self.btnAlarm1 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: self.loop.create_task(self.alarm(26, self.btnAlarm1)), 0)
+                                             lambda: [self.loop.create_task(self.alarm(26, self.btnAlarm1)), self.loop.create_task(self.sound())], 0)
         self.btnAlarm2 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
                                              lambda: self.loop.create_task(self.alarm(24, self.btnAlarm2)), 0)
         self.btnAlarm3 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
@@ -504,6 +506,14 @@ class Window(Tk):
         self.btnScenary["state"] = "active"
         self.default()
 
+    async def sound(self):
+        self.alarmStatus = not self.alarmStatus
+        if self.alarmStatus == 1:
+            self.mixer.music.load('alarm.mp3')  # Loading Music File
+            self.mixer.music.play()
+            await asyncio.sleep(.1)
+        else:
+            self.mixer.music.stop()
 
     async def scenary_action_4(self, btn):
         self.change_img(btn)
