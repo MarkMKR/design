@@ -476,14 +476,15 @@ class Window(Tk):
         self.servo('SERVOOPEN', 5)
         await asyncio.sleep(1)
         self.serialFan('FANON')
-        await asyncio.sleep(10)
+        await asyncio.sleep(5)
+        await self.sound()
         self.ledSerial('LEDWRITE', 12, 150)
         self.ledSerial('LEDWRITE', 16, 0)
         self.ledSerial('LEDWRITE', 31, 0)
         self.ledSerial('LEDWRITE', 26, 0)
-        await self.sound()
         self.servo('SERVOCLOSE', 5)
         self.serialFan('FANOFF')
+        await asyncio.sleep(10)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
