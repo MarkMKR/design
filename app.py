@@ -509,7 +509,7 @@ class Window(Tk):
     async def sound(self):
         self.alarmStatus = not self.alarmStatus
         if self.alarmStatus == 1:
-            mixer.music.load('alarm.mp3')  # Loading Music File
+            mixer.music.load('siren.mp3')  # Loading Music File
             mixer.music.play()
             await asyncio.sleep(.1)
         else:
