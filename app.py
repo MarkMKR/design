@@ -4,6 +4,7 @@ from asyncio import Future
 from tkinter import *
 import asyncio
 from PIL import ImageTk, Image
+from pygame import mixer
 import cv2
 from pynput.keyboard import Key, Controller
 import serial
