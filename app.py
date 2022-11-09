@@ -111,7 +111,6 @@ class Window(Tk):
         self.name = 'frame'
         self.status = False
         self.root = Tk()
-        self.root.overrideredirect(1)
         self.root.geometry("1020x600")
         self.root.config(background='#ffffff')
 
