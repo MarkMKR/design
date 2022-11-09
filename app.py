@@ -623,6 +623,8 @@ class Window(Tk):
         await self.sound()
         await asyncio.sleep(1)
         self.fireSerialSingle(22)
+        await asyncio.sleep(.1)
+        self.ledSerial('LEDWRITE', 54, 0)
         await asyncio.sleep(10)
         self.servo('SERVOOPEN', 4)
         await asyncio.sleep(1)
