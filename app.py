@@ -104,7 +104,7 @@ class Window(Tk):
         self.volume = 50;
         self.keyboard = Controller()
         self.loop = loop
-        self.arduino = serial.Serial(port='COM6', baudrate=57600)
+        self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
         self.name = 'frame'
         self.status = False
         self.root = Tk()
