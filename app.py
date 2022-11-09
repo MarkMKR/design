@@ -558,9 +558,35 @@ class Window(Tk):
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
         ##############
+        self.ledSerial('LEDWRITE', 8, 255)
         await asyncio.sleep(5)
-        ##############
-        self.change_img(btn)
+        self.smokeSerial(3)
+        await asyncio.sleep(5)
+        self.fireSerial(41,40)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 8, 0)
+        await asyncio.sleep(.3)
+        self.blink(24, 200, 200)
+        await self.sound()
+        await asyncio.sleep(10)
+        self.servo('SERVOOPEN', 2)
+        await asyncio.sleep(1)
+        self.serialFan('FANON')
+        await asyncio.sleep(5)
+        await self.sound()
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 8, 150)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 41, 0)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 40, 0)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 24, 0)
+        await asyncio.sleep(.2)
+        self.servo('SERVOCLOSE', 2)
+        await asyncio.sleep(1)
+        self.serialFan('FANOFF')
+        await asyncio.sleep(10)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
