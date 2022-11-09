@@ -215,15 +215,15 @@ class Window(Tk):
         self.btnAlarm1 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
                                              lambda: [self.loop.create_task(self.alarm(26, self.btnAlarm1)), self.loop.create_task(self.sound())], 0)
         self.btnAlarm2 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: self.loop.create_task(self.alarm(24, self.btnAlarm2)), 0)
+                                             lambda: [self.loop.create_task(self.alarm(24, self.btnAlarm2)), self.loop.create_task(self.sound())], 0)
         self.btnAlarm3 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: self.loop.create_task(self.alarm(36, self.btnAlarm3)), 0)
+                                             lambda: [self.loop.create_task(self.alarm(36, self.btnAlarm3)), self.loop.create_task(self.sound())], 0)
         self.btnAlarm4 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: self.loop.create_task(self.alarm(29, self.btnAlarm4)), 0)
+                                             lambda: [self.loop.create_task(self.alarm(29, self.btnAlarm4)), self.loop.create_task(self.sound())], 0)
         self.btnAlarm5 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: self.loop.create_task(self.alarm(27, self.btnAlarm5)), 0)
+                                             lambda: [self.loop.create_task(self.alarm(27, self.btnAlarm5)), self.loop.create_task(self.sound())], 0)
         self.btnAlarm6 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: self.loop.create_task(self.alarm(20, self.btnAlarm6)), 0)
+                                             lambda: [self.loop.create_task(self.alarm(20, self.btnAlarm6)), self.loop.create_task(self.sound())], 0)
 
         self.btnHair5 = self.btn_father.btn(self.img_father.wilka, self.img_father.wilka_active,
                                             lambda: self.loop.create_task(self.fireSingle(34, self.btnHair5)), 1)
@@ -468,7 +468,9 @@ class Window(Tk):
         self.fireSerial(16,31)
         await asyncio.sleep(2)
         self.blink(26, 200, 200)
+        self.sound()
         await asyncio.sleep(2)
+        self.sound()
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
