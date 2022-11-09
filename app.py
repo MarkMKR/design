@@ -460,6 +460,7 @@ class Window(Tk):
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
         ##############
+        await asyncio.sleep(5)
         self.ledSerial('LEDWRITE', 12, 255)
         await asyncio.sleep(5)
         self.fireSerial(34, 63)
@@ -505,6 +506,7 @@ class Window(Tk):
             scen["state"] = "disable"
         self.btnScenary["state"] = "disable"
         ##############
+        await asyncio.sleep(5)
         self.ledSerial('LEDWRITE', 46, 255)
         await asyncio.sleep(5)
         self.fireSerialSingle(39)
@@ -558,6 +560,7 @@ class Window(Tk):
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
         ##############
+        await asyncio.sleep(5)
         self.ledSerial('LEDWRITE', 8, 255)
         await asyncio.sleep(5)
         self.fireSerial(41,40)
@@ -607,8 +610,42 @@ class Window(Tk):
         self.btnScenary["state"] = "disable"
         ##############
         await asyncio.sleep(5)
-        ##############
-        self.change_img(btn)
+        self.ledSerial('LEDWRITE', 13, 255)
+        await asyncio.sleep(1)
+        self.fireSerial(18,43)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 54, 255)
+        await asyncio.sleep(5)
+        self.smokeSerial(9)
+        await asyncio.sleep(3)
+        self.ledSerial('LEDWRITE', 13, 0)
+        self.blink(27, 200, 200)
+        await self.sound()
+        await asyncio.sleep(1)
+        self.fireSerialSingle(22)
+        await asyncio.sleep(10)
+        self.servo('SERVOOPEN', 4)
+        await asyncio.sleep(1)
+        self.serialFan('FANON')
+        await asyncio.sleep(5)
+        await self.sound()
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 13, 150)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 22, 0)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 27, 0)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 54, 0)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 18, 0)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 43, 0)
+        await asyncio.sleep(5)
+        self.serialFan('FANOFF')
+        await asyncio.sleep(1)
+        self.servo('SERVOCLOSE', 4)
+        await asyncio.sleep(10)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
