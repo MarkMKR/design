@@ -189,17 +189,17 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.smoke(11, self.btnSmoke5)), 0)
 
         self.btnCam1 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(-1, self.btnCam1)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(0, self.btnCam1)), 0)
         self.btnCam2 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(0, self.btnCam2)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(1, self.btnCam2)), 0)
         self.btnCam3 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(1, self.btnCam3)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(2, self.btnCam3)), 0)
         self.btnCam4 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(2, self.btnCam4)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(3, self.btnCam4)), 0)
         self.btnCam5 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(3, self.btnCam5)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(4, self.btnCam5)), 0)
         self.btnCam6 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable('/dev/video0', self.btnCam6)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(5, self.btnCam6)), 0)
 
         self.btnFire1 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
                                             lambda: self.loop.create_task(self.fire(16, 31, self.btnFire1)), 0)
@@ -431,26 +431,23 @@ class Window(Tk):
         camInstance["state"] = "disable"
 
     async def camEnable(self, camName, cam):
+        print(camName)
         self.switchCam(cam)
-        vid = cv2.VideoCapture(0, cv2.CAP_V4L)
-        vid.start()
+        cam = cv2.VideoCapture(camName, cv2.CAP_V4L)
         self.status = not self.status
         if self.status != False:
             while (True):
                 if self.status == False:
-                    break                           
-                ret, frame = vid.read()
-                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                cv2.moveWindow(self.name, 1920, 0)
-                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                cv2.imshow(self.name, frame)
+                    break
+                ret, image = cam.read()
+                cv2.imshow('Imagetest', image)
                 await asyncio.sleep(0.01)
         else:
             while (True):
                 if self.status == True:
                     break
-                ret, frame = vid.read()
-                cv2.imshow(self.name, frame)
+                ret, image = cam.read()
+                cv2.imshow('Imagetest', image)
                 await asyncio.sleep(0.01)
 
     async def scenary_action_1(self, btn):
