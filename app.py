@@ -105,7 +105,7 @@ class Window(Tk):
         self.volume = 50;
         self.keyboard = Controller()
         self.loop = loop
-        self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
+        self.arduino = serial.Serial(port='COM6', baudrate=57600)
         self.name = 'frame'
         self.status = False
         self.root = Tk()
@@ -123,7 +123,7 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.new()), 0, 222,46)
 
         self.btnDoor5 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(5, self.btnDoor5)), 1)
+                                            lambda: self.loop.create_task(self.door(5, self.btnDoor5)), 0)
         self.btnDoor2 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
                                             lambda: self.loop.create_task(self.door(2, self.btnDoor2)), 0)
         self.btnDoor0 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
@@ -136,28 +136,28 @@ class Window(Tk):
                                             lambda: self.loop.create_task(self.door(1, self.btnDoor1)), 0)
 
         self.btnLed0 = self.btn_father.btn(self.img_father.led, self.img_father.led_active,
-                                           lambda: self.loop.create_task(self.led(21, self.btnLed0)), 1)
+                                           lambda: self.loop.create_task(self.led(11, self.btnLed0)), 1) #child
         self.btnLed1 = self.btn_father.btn(self.img_father.led, self.img_father.led_active,
-                                           lambda: self.loop.create_task(self.led(9, self.btnLed1)), 1)
+                                           lambda: self.loop.create_task(self.led(9, self.btnLed1)), 1)  #sleep
         self.btnLed2 = self.btn_father.btn(self.img_father.led, self.img_father.led_active,
-                                           lambda: self.loop.create_task(self.led(1, self.btnLed2)), 1)
+                                           lambda: self.loop.create_task(self.led(1, self.btnLed2)), 1) #batroom
         self.btnLed3 = self.btn_father.btn(self.img_father.led, self.img_father.led_active,
-                                           lambda: self.loop.create_task(self.led(10, self.btnLed3)), 1)
+                                           lambda: self.loop.create_task(self.led(10, self.btnLed3)), 1) #middle3
         self.btnLed4 = self.btn_father.btn(self.img_father.led, self.img_father.led_active,
                                            lambda: self.loop.create_task(self.led(15, self.btnLed4)), 1)
         self.btnLed5 = self.btn_father.btn(self.img_father.led, self.img_father.led_active,
                                            lambda: self.loop.create_task(self.led(14, self.btnLed5)), 1)
         self.btnLed6 = self.btn_father.btn(self.img_father.led, self.img_father.led_active,
-                                           lambda: self.loop.create_task(self.led(5, self.btnLed6)), 1)
+                                           lambda: self.loop.create_task(self.led(5, self.btnLed6)), 1)  #kitchen
         self.btnLed7 = self.btn_father.btn(self.img_father.led, self.img_father.led_active,
-                                           lambda: self.loop.create_task(self.led(3, self.btnLed7)), 1)
+                                           lambda: self.loop.create_task(self.led(3, self.btnLed7)), 1) #middle1
         self.btnLed8 = self.btn_father.btn(self.img_father.led, self.img_father.led_active,
-                                           lambda: self.loop.create_task(self.led(2, self.btnLed8)), 1)
+                                           lambda: self.loop.create_task(self.led(2, self.btnLed8)), 1) #kotel
 
         self.btnLight0 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
                                              lambda: self.loop.create_task(self.light(12, self.btnLight0)), 1)
         self.btnLight1 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(8, self.btnLight1)), 1)
+                                             lambda: self.loop.create_task(self.light(8, self.btnLight1)), 1) #sleep
         self.btnLight2 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
                                              lambda: self.loop.create_task(self.light(0, self.btnLight2)), 1)
         self.btnLight3 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
@@ -167,7 +167,7 @@ class Window(Tk):
         self.btnLight5 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
                                              lambda: self.loop.create_task(self.light(13, self.btnLight5)), 1)
         self.btnLight6 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(4, self.btnLight6)), 1)
+                                             lambda: self.loop.create_task(self.light(4, self.btnLight6)), 1)  #kitchen
         self.btnLight7 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
                                              lambda: self.loop.create_task(self.light(47, self.btnLight7)), 1)
         self.btnLight8 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
@@ -202,13 +202,13 @@ class Window(Tk):
         self.btnFire1 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
                                             lambda: self.loop.create_task(self.fire(16, 31, self.btnFire1)), 0)
         self.btnFire2 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fire(1, 1, self.btnFire2)), 0)
+                                            lambda: self.loop.create_task(self.fireSingle(41, self.btnFire2)), 0)
         self.btnFire3 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fire(35, 37, self.btnFire3)), 0)
+                                            lambda: self.loop.create_task(self.fire(35, 53, self.btnFire3)), 0)
         self.btnFire4 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fire(3, 1, self.btnFire4)), 0)
+                                            lambda: self.loop.create_task(self.fireSingle(22, self.btnFire4)), 0)
         self.btnFire6 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fire(5, 1, self.btnFire6)), 0)
+                                            lambda: self.loop.create_task(self.fire(38, 42, self.btnFire6)), 0)
 
         self.btnAlarm1 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
                                              lambda: self.loop.create_task(self.alarm(26, self.btnAlarm1)), 0)
@@ -224,9 +224,9 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.alarm(20, self.btnAlarm6)), 0)
 
         self.btnHair5 = self.btn_father.btn(self.img_father.wilka, self.img_father.wilka_active,
-                                            lambda: self.loop.create_task(self.hair(34, self.btnHair5)), 0)
+                                            lambda: self.loop.create_task(self.fireSingle(34, self.btnHair5)), 1)
         self.btnHair6 = self.btn_father.btn(self.img_father.hair_dryer, self.img_father.hair_dryer_active,
-                                            lambda: self.loop.create_task(self.hair(33, self.btnHair6)), 0)
+                                            lambda: self.loop.create_task(self.fireSingle(33, self.btnHair6)), 1)
 
         self.btnVolumeUp = self.btn_father.btn(self.img_father.volumeUp, self.img_father.volumeUp,
                                                lambda: self.loop.create_task(self.volumeUp()), 0)
@@ -234,9 +234,9 @@ class Window(Tk):
                                                  lambda: self.loop.create_task(self.volumeDown()), 0)
 
         self.btnFirepalce = self.btn_father.btn(self.img_father.fireplace, self.img_father.fireplace_active,
-                                                lambda: self.loop.create_task(self.fir(18, 22, self.btnFirepalce)), 1)
+                                                lambda: self.loop.create_task(self.fire(18, 43, self.btnFirepalce)), 1)
         self.btnTree = self.btn_father.btn(self.img_father.tree, self.img_father.tree_active,
-                                           lambda: self.loop.create_task(self.tree(0, self.btnTree)), 1)
+                                           lambda: self.loop.create_task(self.tree(54, self.btnTree)), 1)
 
         self.btnPanel3 = self.btn_father.btn(self.img_father.panel, self.img_father.panel_active,
                                              lambda: self.loop.create_task(self.panel(23, self.btnPanel3)), 0)
@@ -245,15 +245,15 @@ class Window(Tk):
         self.btnPanel5 = self.btn_father.btn(self.img_father.panel, self.img_father.panel_active,
                                              lambda: self.loop.create_task(self.panel(28, self.btnPanel5)), 0)
         self.btnPanel6 = self.btn_father.btn(self.img_father.panel, self.img_father.panel_active,
-                                             lambda: self.loop.create_task(self.panel(17, self.btnPanel6)), 0)
+                                             lambda: self.loop.create_task(self.panel(30, self.btnPanel6)), 0)
         self.btnPanel7 = self.btn_father.btn(self.img_father.panel, self.img_father.panel_active,
-                                             lambda: self.loop.create_task(self.panel(0, self.btnPanel7)), 0)
+                                             lambda: self.loop.create_task(self.panel(37, self.btnPanel7)), 1)
 
-        self.btnTorch = self.btn_father.btn(self.img_father.torch, self.img_father.torch_active, lambda: self.loop.create_task(self.light(40, self.btnTorch)), 0)
+        self.btnTorch = self.btn_father.btn(self.img_father.torch, self.img_father.torch_active, lambda: self.loop.create_task(self.light(40, self.btnTorch)), 1)
         self.btnFan = self.btn_father.btn(self.img_father.vent, self.img_father.vent_active, lambda: self.loop.create_task(self.fan(self.btnFan)), 0)
         self.btnBalon = self.btn_father.btn(self.img_father.balon, self.img_father.balon_active, lambda: self.loop.create_task(self.light(21, self.btnBalon)), 0)
-        self.btnKotel = self.btn_father.btn(self.img_father.kotel, self.img_father.kotel_active, lambda: self.loop.create_task(self.alarm(17, self.btnKotel)), 0)
-        self.btnHot = self.btn_father.btn(self.img_father.kotel, self.img_father.kotel_active, lambda: self.loop.create_task(self.led(39, self.btnHot)), 0)
+        self.btnKotel = self.btn_father.btn(self.img_father.kotel, self.img_father.kotel_active, lambda: self.loop.create_task(self.fireSingle(17, self.btnKotel)), 1)
+        self.btnHot = self.btn_father.btn(self.img_father.kotel, self.img_father.kotel_active, lambda: self.loop.create_task(self.fireSingle(39, self.btnHot)), 1)
 
 
 
@@ -354,6 +354,14 @@ class Window(Tk):
         data = self.arduino.read_all()
         print(data.decode())
 
+    def fireSerialSingle(self, param1):
+        string = "<LEDFIREB" + "\0" + str(param1)  + "\0" + str(63) + ">"
+        print(string)
+        self.arduino.write(bytes(string, 'utf-8'))
+        data = self.arduino.read_all()
+        print(data.decode())
+
+
     def servo(self, method, param1):
         string = "<" + method + "\0" + str(param1) + ">"
         print(string)
@@ -450,25 +458,15 @@ class Window(Tk):
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
         ##############
-        await asyncio.sleep(5)
-        ##############
-        self.change_img(btn)
-        for scen in self.scenaries:
-            scen["state"]="active"
-        self.btnScenary["state"] = "active"
-        self.default()
-
-
-    async def scenary_action_1(self, btn):
-        self.change_img(btn)
-        self.blackout()
-        for scen in self.scenaries:
-            scen["state"]="disable"
-        self.btnScenary["state"] = "disable"
-        ##############
-        await asyncio.sleep(5)
-        ##############
-        self.change_img(btn)
+        self.ledSerial('LEDWRITE', 12, 25)
+        self.fireSerial(34, 63)
+        await asyncio.sleep(100)
+        self.smokeSerial(6)
+        await asyncio.sleep(2)
+        self.fireSerial(16,31)
+        await asyncio.sleep(2)
+        self.blink(26, 200, 200)
+        await asyncio.sleep(2)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
@@ -505,6 +503,7 @@ class Window(Tk):
             scen["state"]="active"
         self.btnScenary["state"] = "active"
         self.default()
+
 
     async def scenary_action_4(self, btn):
         self.change_img(btn)
@@ -579,6 +578,8 @@ class Window(Tk):
 
     async def tree(self, index, tree):
         self.change_img(tree)
+        status = 0 if tree.status == 0 else 255
+        self.ledSerial("LEDWRITE", index, status)
 
     async def door(self, index, door):
         self.change_img(door)
@@ -597,7 +598,7 @@ class Window(Tk):
 
     async def fan(self, fan):
         self.change_img(fan)
-        comand = 'FANON' if fan.status == 1 else 'FANOOF'
+        comand = 'FANOFF' if fan.status == 0 else 'FANON'
         self.serialFan(comand)
 
     async def smoke(self, index, smoke):
@@ -612,17 +613,28 @@ class Window(Tk):
 
     async def fire(self, index1, index2, fire):
         self.change_img(fire)
-        self.fireSerial(index1, index2)
         status = 0 if fire.status == 0 else 255
-        self.ledSerial("LEDWRITE", index1, status)
-        self.ledSerial("LEDWRITE", index2, status)
-        print('fire1' + str(index1) + ' ===== fire2' + str(index2))
+        if status == 0:
+            self.ledSerial("LEDWRITE", index1, 0)
+            self.ledSerial("LEDWRITE", index2, 0)
+        else:
+            self.fireSerial(index1, index2)
+
+    async def fireSingle(self, index1, fire):
+        self.change_img(fire)
+        status = 0 if fire.status == 0 else 255
+        if status == 0:
+            self.ledSerial("LEDWRITE", index1, 0)  
+        else:
+            self.fireSerialSingle(index1)
 
     async def alarm(self, index, alarm):
         self.change_img(alarm)
-        self.blink(index, 100, 300)
         status = 0 if alarm.status == 0 else 255
-        self.ledSerial("LEDWRITE", index, status)
+        if status == 0:
+            self.ledSerial('LEDWRITE',index, 0)
+        else:
+            self.blink(index, 200, 200)
         print('alarm' + str(index))
 
     async def hair(self, index, hair):
@@ -633,11 +645,12 @@ class Window(Tk):
 
     async def panel(self, index, panel):
         self.change_img(panel)
-        self.blink(index, 100, 300)
         status = 0 if panel.status == 0 else 255
-        self.ledSerial("LEDWRITE", index, status)
-        print('panel' + str(index))
-
+        if status == 0:
+            self.ledSerial('LEDWRITE',index, 0)
+        else:
+            self.blink(index, 200, 200)
+        print('alarm' + str(index))                        
     async def volumeDown(self):
         self.volume -= 10
         if self.volume <= 9:
