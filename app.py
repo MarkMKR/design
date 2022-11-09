@@ -440,9 +440,6 @@ class Window(Tk):
                 if self.status == False:
                     break
                 ret, image = cam.read()
-                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                cv2.moveWindow(self.name, 1920, 0)
-                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
                 cv2.imshow('Imagetest', image)
                 await asyncio.sleep(0.01)
         else:
@@ -450,9 +447,6 @@ class Window(Tk):
                 if self.status == True:
                     break
                 ret, image = cam.read()
-                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                cv2.moveWindow(self.name, 1920, 0)
-                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
                 cv2.imshow('Imagetest', image)
                 await asyncio.sleep(0.01)
 
