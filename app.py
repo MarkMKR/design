@@ -460,7 +460,7 @@ class Window(Tk):
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
         ##############
-        self.ledSerial('LEDWRITE', 12, 25)
+        self.ledSerial('LEDWRITE', 12, 255)
         self.fireSerial(34, 63)
         await asyncio.sleep(2)
         self.smokeSerial(6)
