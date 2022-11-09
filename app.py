@@ -443,8 +443,8 @@ class Window(Tk):
                 cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
                 cv2.moveWindow(self.name, 1920, 0)
                 cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                cv2.waitKey(1)
                 cv2.imshow('Imagetest', image)
+                cv2.waitKey(1)
                 await asyncio.sleep(0.01)
         else:
             while (True):
@@ -454,8 +454,8 @@ class Window(Tk):
                 cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
                 cv2.moveWindow(self.name, 1920, 0)
                 cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                cv2.waitKey(1)
                 cv2.imshow('Imagetest', image)
+                cv2.waitKey(1)
                 await asyncio.sleep(0.01)
 
     async def scenary_action_1(self, btn):
