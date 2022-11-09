@@ -441,6 +441,7 @@ class Window(Tk):
                     break
                 ret, image = cam.read()
                 cv2.imshow('Imagetest', image)
+                cv2.waitKey(1)
                 await asyncio.sleep(0.01)
         else:
             while (True):
@@ -448,6 +449,7 @@ class Window(Tk):
                     break
                 ret, image = cam.read()
                 cv2.imshow('Imagetest', image)
+                cv2.waitKey(1)
                 await asyncio.sleep(0.01)
 
     async def scenary_action_1(self, btn):
