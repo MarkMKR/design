@@ -468,9 +468,9 @@ class Window(Tk):
         self.fireSerial(16,31)
         await asyncio.sleep(2)
         self.blink(26, 200, 200)
-        self.sound()
+        await self.sound()
         await asyncio.sleep(2)
-        self.sound()
+        await self.sound()
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
