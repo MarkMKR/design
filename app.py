@@ -4,14 +4,12 @@ from asyncio import Future
 from tkinter import *
 import asyncio
 from PIL import ImageTk, Image
-from pygame import mixer
 import cv2
 from pynput.keyboard import Key, Controller
 import serial
 import pyautogui
 from random import randrange
 from video_capture import VideoCaptureAsync
-mixer.init()
 
 class App:
     async def exec(self):
@@ -107,7 +105,6 @@ class Window(Tk):
         self.volume = 50;
         self.keyboard = Controller()
         self.loop = loop
-        self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
         self.name = 'frame'
         self.status = False
         self.root = Tk()
@@ -465,9 +462,9 @@ class Window(Tk):
         self.fireSerial(34, 63)
         await asyncio.sleep(5)
         self.smokeSerial(6)
-        await asyncio.sleep(.1)
+        await asyncio.sleep(.3)
         self.ledSerial('LEDWRITE', 12, 0)
-        await asyncio.sleep(.1)
+        await asyncio.sleep(.3)
         self.ledSerial('LEDWRITE', 34, 0)
         await asyncio.sleep(3)
         self.blink(26, 200, 200)
@@ -480,37 +477,64 @@ class Window(Tk):
         self.serialFan('FANON')
         await asyncio.sleep(5)
         await self.sound()
-        await asyncio.sleep(.1)
+        await asyncio.sleep(.2)
         self.ledSerial('LEDWRITE', 12, 150)
-        await asyncio.sleep(.1)
+        await asyncio.sleep(.2)
         self.ledSerial('LEDWRITE', 16, 0)
-        await asyncio.sleep(.1)
+        await asyncio.sleep(.2)
         self.ledSerial('LEDWRITE', 31, 0)
-        await asyncio.sleep(.1)
+        await asyncio.sleep(.2)
         self.ledSerial('LEDWRITE', 26, 0)
-        await asyncio.sleep(.1)
+        await asyncio.sleep(.2)
         self.servo('SERVOCLOSE', 5)
-        await asyncio.sleep(.1)
+        await asyncio.sleep(.2)
         self.serialFan('FANOFF')
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
         self.default()
-
-
     async def scenary_action_2(self, btn):
         self.change_img(btn)
         self.blackout()
         for scen in self.scenaries:
-            scen["state"]="disable"
+            scen["state"] = "disable"
         self.btnScenary["state"] = "disable"
         ##############
+        self.ledSerial('LEDWRITE', 46, 255)
         await asyncio.sleep(5)
-        ##############
-        self.change_img(btn)
+        self.fireSerialSingle(39)
+        await asyncio.sleep(5)
+        self.smokeSerial(6)
+        await asyncio.sleep(3)
+        self.fireSerial(38,42)
+        await asyncio.sleep(.3)
+        self.blink(20, 200, 200)
+        await asyncio.sleep(.3)
+        self.ledSerial('LEDWRITE', 21, 255)
+        await asyncio.sleep(.7)
+        self.ledSerial('LEDWRITE', 21, 255)
+        await asyncio.sleep(10)
+        self.servo('SERVOOPEN', 5)
+        await asyncio.sleep(1)
+        self.serialFan('FANON')
+        await asyncio.sleep(5)
+        await self.sound()
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 38, 150)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 42, 0)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 20, 0)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 39, 0)
+        await asyncio.sleep(.2)
+        self.servo('SERVOCLOSE', 5)
+        await asyncio.sleep(.2)
+        self.serialFan('FANOFF')
+        await asyncio.sleep(10)
         for scen in self.scenaries:
-            scen["state"]="active"
+            scen["state"] = "active"
         self.btnScenary["state"] = "active"
         self.default()
 
