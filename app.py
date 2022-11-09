@@ -197,7 +197,7 @@ class Window(Tk):
         self.btnCam5 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(3, self.btnCam5)), 0)
         self.btnCam6 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(4, self.btnCam6)), 0)
+                                           lambda: self.loop.create_task(self.camEnable('/dev/video0', self.btnCam6)), 0)
 
         self.btnFire1 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
                                             lambda: self.loop.create_task(self.fire(16, 31, self.btnFire1)), 0)
@@ -422,7 +422,7 @@ class Window(Tk):
 
     async def camEnable(self, camName, cam):
         self.switchCam(cam)
-        vid = VideoCaptureAsync(src=0, width=200, height=200)
+        vid = VideoCaptureAsync(src=camName, width=200, height=200)
         vid.start()
         self.status = not self.status
         if self.status != False:
@@ -440,9 +440,6 @@ class Window(Tk):
                 if self.status == True:
                     break
                 ret, frame = vid.read()
-                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                cv2.moveWindow(self.name, 1920, 0)
-                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
                 cv2.imshow(self.name, frame)
                 await asyncio.sleep(0.01)
 
