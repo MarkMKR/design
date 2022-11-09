@@ -60,7 +60,17 @@ class WD_Images(Tk):
         self.volumeUp = "img/sound-increase.png"
         self.volumeDown = "img/sound-decrease.png"
 
+        self.kotel = "img/gaz.png"
+        self.kotel_active = "img/gaz-active.png"
 
+        self.torch = "img/torch.png"
+        self.torch_active = "img/torch-active.png"
+
+        self.vent = "img/vent.png"
+        self.vent_active = "img/vent-active.png"
+
+        self.balon = "img/balon.png"
+        self.balon_active = "img/balon-active.png"
 class WD_Button(Tk):
 
     count = 0
@@ -89,7 +99,7 @@ class Window(Tk):
         self.volume = 50;
         self.keyboard = Controller()
         self.loop = loop
-        self.arduino = serial.Serial(port='COM6', baudrate=57600)
+        self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
         self.name = 'frame'
         self.status = False
         self.root = Tk()
@@ -217,7 +227,7 @@ class Window(Tk):
                                                  lambda: self.loop.create_task(self.volumeDown()), 0)
 
         self.btnFirepalce = self.btn_father.btn(self.img_father.fireplace, self.img_father.fireplace_active,
-                                                lambda: self.loop.create_task(self.fireplace(0, self.btnFirepalce)), 1)
+                                                lambda: self.loop.create_task(self.fir(18, 22, self.btnFirepalce)), 1)
         self.btnTree = self.btn_father.btn(self.img_father.tree, self.img_father.tree_active,
                                            lambda: self.loop.create_task(self.tree(0, self.btnTree)), 1)
 
@@ -231,6 +241,17 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.panel(17, self.btnPanel6)), 0)
         self.btnPanel7 = self.btn_father.btn(self.img_father.panel, self.img_father.panel_active,
                                              lambda: self.loop.create_task(self.panel(0, self.btnPanel7)), 0)
+
+        self.btnTorch = self.btn_father.btn(self.img_father.torch, self.img_father.torch_active, lambda: self.loop.create_task(self.light(40, self.btnTorch)), 0)
+        self.btnFan = self.btn_father.btn(self.img_father.vent, self.img_father.vent_active, lambda: self.loop.create_task(self.fan(self.btnFan)), 0)
+        self.btnBalon = self.btn_father.btn(self.img_father.balon, self.img_father.balon_active, lambda: self.loop.create_task(self.light(21, self.btnBalon)), 0)
+        self.btnKotel = self.btn_father.btn(self.img_father.kotel, self.img_father.kotel_active, lambda: self.loop.create_task(self.alarm(17, self.btnKotel)), 0)
+
+        self.btnTorch.place(x=915, y=220)  # floor 3 l
+        self.btnFan.place(x=550, y=520)  # floor 3 l
+        self.btnBalon.place(x=915, y=520)  # floor 3 l
+        self.btnKotel.place(x=405, y=365)  # floor 3 l
+
 
         self.btnManual.place(x=20, y=20)
 
@@ -344,6 +365,13 @@ class Window(Tk):
         data = self.arduino.read_all()
         print(data.decode())
 
+    def serialFan(self, comand):
+        string = f"<{comand}>"
+        print(string)
+        self.arduino.write(bytes(string, 'utf-8'))
+        data = self.arduino.read_all()
+        print(data.decode())
+
     def blackout(self):
         string = "<BLACKOUT>"
         print(string)
@@ -442,6 +470,11 @@ class Window(Tk):
         self.change_img(light)
         status = 0 if light.status == 0 else 255
         self.ledSerial("LEDWRITE", index, status)
+
+    async def fan(self, fan):
+        self.change_img(fan)
+        comand = 'FANON' if fan.status == 1 else 'FANOOF'
+        self.serialFan(comand)
 
     async def smoke(self, index, smoke):
         self.change_img(smoke)
