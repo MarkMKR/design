@@ -440,8 +440,8 @@ class Window(Tk):
                 if self.status == False:
                     break
                 ret, image = cam.read()
-                cv2.namedWindow(self.name)
-                cv2.moveWindow(self.name, 900, -900)
+                cv2.namedWindow(image)
+                cv2.moveWindow(image, 1024, 0)
                 cv2.imshow('Imagetest', image)
                 cv2.waitKey(1)
                 await asyncio.sleep(0.01)
@@ -450,8 +450,8 @@ class Window(Tk):
                 if self.status == True:
                     break
                 ret, image = cam.read()
-                cv2.namedWindow(self.name)
-                cv2.moveWindow(self.name, 900, -900)
+                cv2.namedWindow(image)
+                cv2.moveWindow(image, 1024, 0)
                 cv2.imshow('Imagetest', image)
                 cv2.waitKey(1)
                 await asyncio.sleep(0.01)
