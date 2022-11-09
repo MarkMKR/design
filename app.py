@@ -102,7 +102,6 @@ class WD_Button(Tk):
 class Window(Tk):
 
     def __init__(self, loop):
-        self.mixer = pygame.mixer.init() #Initialzing pyamge mixer
         self.alarmStatus = 0
         self.volume = 50;
         self.keyboard = Controller()
@@ -509,11 +508,11 @@ class Window(Tk):
     async def sound(self):
         self.alarmStatus = not self.alarmStatus
         if self.alarmStatus == 1:
-            self.mixer.music.load('alarm.mp3')  # Loading Music File
-            self.mixer.music.play()
+            mixer.music.load('alarm.mp3')  # Loading Music File
+            mixer.music.play()
             await asyncio.sleep(.1)
         else:
-            self.mixer.music.stop()
+            mixer.music.stop()
 
     async def scenary_action_4(self, btn):
         self.change_img(btn)
