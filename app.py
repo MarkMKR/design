@@ -9,6 +9,7 @@ from pynput.keyboard import Key, Controller
 import serial
 import pyautogui
 from random import randrange
+from video_capture import VideoCaptureAsync
 
 
 class App:
@@ -421,7 +422,8 @@ class Window(Tk):
 
     async def camEnable(self, camName, cam):
         self.switchCam(cam)
-        vid = cv2.VideoCapture(camName, cv2.CAP_DSHOW)
+        vid = VideoCaptureAsync(src=0, width=200, height=200)
+        vid.start()
         self.status = not self.status
         if self.status != False:
             while (True):
