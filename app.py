@@ -415,7 +415,9 @@ class Window(Tk):
     def switchCam(self, camInstance):
         for camVal in self.cams:
             camVal.config(image=camInstance.pasive)
+            camVal["state"] = "active"
         self.change_img(camInstance)
+        camInstance["state"] = "disable"
 
     async def camEnable(self, camName, cam):
         self.switchCam(cam)
@@ -424,7 +426,7 @@ class Window(Tk):
         if self.status != False:
             while (True):
                 if self.status == False:
-                    break
+                    break                           
                 ret, frame = vid.read()
                 cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
                 cv2.moveWindow(self.name, 1920, 0)
