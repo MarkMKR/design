@@ -541,9 +541,9 @@ class Window(Tk):
         await asyncio.sleep(.2)
         await self.sound()
         await asyncio.sleep(10)
-        self.servo('SERVOCLOSE', 1)
-        await asyncio.sleep(.2)
         self.serialFan('FANOFF')
+        await asyncio.sleep(.5)
+        self.servo('SERVOCLOSE', 1)
         await asyncio.sleep(10)
         for scen in self.scenaries:
             scen["state"] = "active"
