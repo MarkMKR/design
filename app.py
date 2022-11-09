@@ -432,7 +432,7 @@ class Window(Tk):
 
     async def camEnable(self, camName, cam):
         self.switchCam(cam)
-        vid = VideoCaptureAsync(src=camName, width=200, height=200)
+        vid = cv2.VideoCapture(0, cv2.CAP_V4L)
         vid.start()
         self.status = not self.status
         if self.status != False:
@@ -508,7 +508,6 @@ class Window(Tk):
         ##############
         await asyncio.sleep(5)
         self.ledSerial('LEDWRITE', 46, 255)
-        await asyncio.sleep(5)
         self.fireSerialSingle(39)
         await asyncio.sleep(5)
         self.smokeSerial(6)
