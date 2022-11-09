@@ -11,7 +11,7 @@ import serial
 import pyautogui
 from random import randrange
 from video_capture import VideoCaptureAsync
-
+mixer.init()
 
 class App:
     async def exec(self):
