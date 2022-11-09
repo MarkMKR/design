@@ -467,10 +467,13 @@ class Window(Tk):
         await asyncio.sleep(2)
         self.fireSerial(16,31)
         await asyncio.sleep(2)
+        self.servo('SERVOOPEN', 5)
+        await asyncio.sleep(2)
         self.blink(26, 200, 200)
         await self.sound()
         await asyncio.sleep(2)
         await self.sound()
+        self.servo('SERVOCLOSE', 5)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
