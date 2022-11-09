@@ -114,8 +114,8 @@ class Window(Tk):
         self.root.geometry("1020x600")
         self.root.config(background='#ffffff')
 
-        self.app_backround = ImageTk.PhotoImage(Image.open("img/back.png").resize((1024, 600)))
-        self.label1 = Label(self.root, image=self.app_backround, background='#ffffff')
+        self.app_backround = ImageTk.PhotoImage(Image.open("img/back.png").resize((1024, 585)))
+        self.label1 = Label(self.root, image=self.app_backround, background='#ffffff', padx=50, pady=50)
         self.label1.place(x=0, y=0)
 
         self.img_father = WD_Images(self.root)
@@ -259,81 +259,81 @@ class Window(Tk):
 
 
 
-        self.btnTorch.place(x=915, y=220)  # floor 3 l
-        self.btnFan.place(x=550, y=520)  # floor 3 l
-        self.btnBalon.place(x=915, y=520)  # floor 3 l
-        self.btnHot.place(x=915, y=460)  # floor 3 l
-        self.btnKotel.place(x=405, y=365)  # floor 3 l
+        self.btnTorch.place(x=915, y=212)  # floor 3 l
+        self.btnFan.place(x=550, y=505)  # floor 3 l
+        self.btnBalon.place(x=915, y=505)  # floor 3 l
+        self.btnHot.place(x=915, y=450)  # floor 3 l
+        self.btnKotel.place(x=405, y=353)  # floor 3 l
 
 
         self.btnManual.place(x=20, y=20)
 
-        self.btnDoor5.place(x=185, y=220)  # floor 3 l
-        self.btnDoor2.place(x=697, y=220)  # floor 3 r
-        self.btnDoor0.place(x=185, y=365)  # floor 2 l
-        self.btnDoor4.place(x=697, y=365)  # floor 2 r
-        self.btnDoor3.place(x=185, y=520)  # floor 1 l
-        self.btnDoor1.place(x=697, y=520)  # floor 1 r
+        self.btnDoor5.place(x=185, y=212)  # floor 3 l
+        self.btnDoor2.place(x=697, y=212)  # floor 3 r
+        self.btnDoor0.place(x=185, y=353)  # floor 2 l
+        self.btnDoor4.place(x=697, y=353)  # floor 2 r
+        self.btnDoor3.place(x=185, y=505)  # floor 1 l
+        self.btnDoor1.place(x=697, y=505)  # floor 1 r
 
-        self.btnLed0.place(x=240, y=220)  # floor 3 l
-        self.btnLed1.place(x=750, y=220)  # floor 3 l
-        self.btnLed2.place(x=240, y=365)  # floor 3 l
-        self.btnLed5.place(x=750, y=365)  # floor 3 l
-        self.btnLed6.place(x=240, y=520)  # floor 3 l
-        self.btnLed8.place(x=750, y=520)  # floor 3 l
-        self.btnLed8.place(x=750, y=520)  # floor 3 l
-        self.btnLed3.place(x=470, y=220)  # floor 3 l
-        self.btnLed4.place(x=470, y=365)  # floor 3 l
-        self.btnLed7.place(x=470, y=520)  # floor 3 l
+        self.btnLed0.place(x=240, y=212)  # floor 3 l
+        self.btnLed1.place(x=750, y=212)  # floor 3 l
+        self.btnLed2.place(x=240, y=353)  # floor 3 l
+        self.btnLed5.place(x=750, y=353)  # floor 3 l
+        self.btnLed6.place(x=240, y=505)  # floor 3 l
+        self.btnLed8.place(x=750, y=505)  # floor 3 l
+        self.btnLed8.place(x=750, y=505)  # floor 3 l
+        self.btnLed3.place(x=470, y=212)  # floor 3 l
+        self.btnLed4.place(x=470, y=353)  # floor 3 l
+        self.btnLed7.place(x=470, y=505)  # floor 3 l
 
-        self.btnLight0.place(x=295, y=220)  # floor 3 l
-        self.btnLight1.place(x=805, y=220)  # floor 3 l
-        self.btnLight2.place(x=295, y=365)  # floor 3 l
-        self.btnLight5.place(x=805, y=365)  # floor 3 l
-        self.btnLight6.place(x=295, y=520)  # floor 3 l
-        self.btnLight8.place(x=805, y=520)  # floor 3 l
-        self.btnLight8.place(x=805, y=520)  # floor 3 l
-        self.btnLight3.place(x=470, y=170)  # floor 3 l
-        self.btnLight4.place(x=470, y=315)  # floor 3 l
-        self.btnLight7.place(x=470, y=470)  # floor 3 l
+        self.btnLight0.place(x=295, y=212)  # floor 3 l
+        self.btnLight1.place(x=805, y=212)  # floor 3 l
+        self.btnLight2.place(x=295, y=353)  # floor 3 l
+        self.btnLight5.place(x=805, y=353)  # floor 3 l
+        self.btnLight6.place(x=295, y=505)  # floor 3 l
+        self.btnLight8.place(x=805, y=505)  # floor 3 l
+        self.btnLight8.place(x=805, y=505)  # floor 3 l
+        self.btnLight3.place(x=470, y=155)  # floor 3 l
+        self.btnLight4.place(x=470, y=300)  # floor 3 l
+        self.btnLight7.place(x=470, y=455)  # floor 3 l
 
-        self.btnTree.place(x=915, y=365)  # floor 3 l
-        self.btnFirepalce.place(x=915, y=305)  # floor 3 l
+        self.btnTree.place(x=915, y=353)  # floor 3 l
+        self.btnFirepalce.place(x=915, y=299)  # floor 3 l
 
-        self.btnSmoke0.place(x=350, y=220)  # floor 3 l
-        self.btnSmoke1.place(x=860, y=220)  # floor 3 l
-        self.btnSmoke2.place(x=350, y=365)  # floor 3 l
-        self.btnSmoke3.place(x=860, y=365)  # floor 3 l
-        self.btnSmoke4.place(x=350, y=520)  # floor 3 l
-        self.btnSmoke5.place(x=860, y=520)  # floor 3 l
+        self.btnSmoke0.place(x=350, y=212)  # floor 3 l
+        self.btnSmoke1.place(x=860, y=212)  # floor 3 l
+        self.btnSmoke2.place(x=350, y=353)  # floor 3 l
+        self.btnSmoke3.place(x=860, y=353)  # floor 3 l
+        self.btnSmoke4.place(x=350, y=505)  # floor 3 l
+        self.btnSmoke5.place(x=860, y=505)  # floor 3 l
 
-        self.btnCam1.place(x=185, y=160)
-        self.btnCam2.place(x=697, y=160)
-        self.btnCam3.place(x=185, y=305)
-        self.btnCam4.place(x=697, y=305)
-        self.btnCam5.place(x=185, y=460)
-        self.btnCam6.place(x=697, y=460)
+        self.btnCam1.place(x=185, y=158)
+        self.btnCam2.place(x=697, y=158)
+        self.btnCam3.place(x=185, y=299)
+        self.btnCam4.place(x=697, y=299)
+        self.btnCam5.place(x=185, y=450)
+        self.btnCam6.place(x=697, y=450)
 
-        self.btnFire1.place(x=240, y=160)
-        self.btnFire2.place(x=750, y=160)
-        self.btnFire3.place(x=240, y=460)
-        self.btnFire4.place(x=750, y=305)
-        self.btnFire6.place(x=750, y=460)
+        self.btnFire1.place(x=240, y=158)
+        self.btnFire2.place(x=750, y=158)
+        self.btnFire3.place(x=240, y=450)
+        self.btnFire4.place(x=750, y=299)
+        self.btnFire6.place(x=750, y=450)
 
-        self.btnAlarm1.place(x=295, y=160)
-        self.btnAlarm2.place(x=805, y=160)
-        self.btnAlarm3.place(x=295, y=460)
-        self.btnAlarm4.place(x=240, y=305)
-        self.btnAlarm5.place(x=805, y=305)
-        self.btnAlarm6.place(x=805, y=460)
+        self.btnAlarm1.place(x=295, y=158)
+        self.btnAlarm2.place(x=805, y=158)
+        self.btnAlarm3.place(x=295, y=450)
+        self.btnAlarm4.place(x=240, y=299)
+        self.btnAlarm5.place(x=805, y=299)
+        self.btnAlarm6.place(x=805, y=450)
 
-        self.btnHair5.place(x=350, y=160)
-        self.btnHair6.place(x=295, y=305)
+        self.btnHair5.place(x=350, y=158)
+        self.btnHair6.place(x=295, y=299)
 
-        self.btnPanel4.place(x=860, y=460)
-        self.btnPanel5.place(x=860, y=305)
-        self.btnPanel6.place(x=350, y=305)
-        self.btnPanel7.place(x=350, y=460)
+        self.btnPanel4.place(x=860, y=450)
+        self.btnPanel5.place(x=860, y=299)
+        self.btnPanel6.place(x=350, y=299)
+        self.btnPanel7.place(x=350, y=450)
 
         self.btnVolumeUp.place(x=30, y=125)
         self.btnVolumeDown.place(x=100, y=125)
