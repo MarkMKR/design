@@ -478,13 +478,19 @@ class Window(Tk):
         self.serialFan('FANON')
         await asyncio.sleep(5)
         await self.sound()
+        await asyncio.sleep(.1)
         self.ledSerial('LEDWRITE', 12, 150)
+        await asyncio.sleep(.1)
         self.ledSerial('LEDWRITE', 16, 0)
+        await asyncio.sleep(.1)
         self.ledSerial('LEDWRITE', 31, 0)
+        await asyncio.sleep(.1)
         self.ledSerial('LEDWRITE', 26, 0)
+        await asyncio.sleep(.1)
         self.servo('SERVOCLOSE', 5)
+        await asyncio.sleep(.1)
         self.serialFan('FANOFF')
-        await asyncio.sleep(10)
+        await asyncio.sleep(5)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
