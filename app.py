@@ -249,7 +249,7 @@ class Window(Tk):
         self.btnPanel6 = self.btn_father.btn(self.img_father.panel, self.img_father.panel_active,
                                              lambda: self.loop.create_task(self.panel(30, self.btnPanel6)), 0)
         self.btnPanel7 = self.btn_father.btn(self.img_father.panel, self.img_father.panel_active,
-                                             lambda: self.loop.create_task(self.panel(37, self.btnPanel7)), 1)
+                                             lambda: self.loop.create_task(self.fireSingle(37, self.btnPanel7)), 1)
 
         self.btnTorch = self.btn_father.btn(self.img_father.torch, self.img_father.torch_active, lambda: self.loop.create_task(self.light(40, self.btnTorch)), 1)
         self.btnFan = self.btn_father.btn(self.img_father.vent, self.img_father.vent_active, lambda: self.loop.create_task(self.fan(self.btnFan)), 0)
