@@ -104,7 +104,7 @@ class Window(Tk):
         self.volume = 50;
         self.keyboard = Controller()
         self.loop = loop
-        self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
+        self.arduino = serial.Serial(port='COM6', baudrate=57600)
         self.name = 'frame'
         self.status = False
         self.root = Tk()
@@ -414,37 +414,33 @@ class Window(Tk):
 
     def switchCam(self, camInstance):
         for camVal in self.cams:
-            camVal.config(image=self.img_father.cam)
+            camVal.config(image=camInstance.pasive)
         self.change_img(camInstance)
 
     async def camEnable(self, camName, cam):
-        try:
-            self.switchCam(cam)
-            vid = cv2.VideoCapture(camName, cv2.CAP_DSHOW)
-            self.status = not self.status
-            if self.status != False:
-                while (True):
-                    if self.status == False:
-                        break
-                    ret, frame = vid.read()
-                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                    cv2.moveWindow(self.name, 1920, 0)
-                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                    cv2.imshow(self.name, frame)
-                    await asyncio.sleep(0.01)
-            else:
-                while (True):
-                    if self.status == True:
-                        break
-                    ret, frame = vid.read()
-                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                    cv2.moveWindow(self.name, 1920, 0)
-                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                    cv2.imshow(self.name, frame)
-                    await asyncio.sleep(0.01)
-        except:
-            self.status = not self.status
-            self.loop.create_task(self.camEnable(camName, cam))
+        self.switchCam(cam)
+        vid = cv2.VideoCapture(camName, cv2.CAP_DSHOW)
+        self.status = not self.status
+        if self.status != False:
+            while (True):
+                if self.status == False:
+                    break
+                ret, frame = vid.read()
+                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                cv2.moveWindow(self.name, 1920, 0)
+                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                cv2.imshow(self.name, frame)
+                await asyncio.sleep(0.01)
+        else:
+            while (True):
+                if self.status == True:
+                    break
+                ret, frame = vid.read()
+                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                cv2.moveWindow(self.name, 1920, 0)
+                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                cv2.imshow(self.name, frame)
+                await asyncio.sleep(0.01)
 
     async def scenary_action_1(self, btn):
         self.change_img(btn)
