@@ -4,12 +4,14 @@ from asyncio import Future
 from tkinter import *
 import asyncio
 from PIL import ImageTk, Image
+from pygame import mixer
 import cv2
 from pynput.keyboard import Key, Controller
 import serial
 import pyautogui
 from random import randrange
 from video_capture import VideoCaptureAsync
+mixer.init()
 
 class App:
     async def exec(self):
@@ -103,6 +105,7 @@ class Window(Tk):
     def __init__(self, loop):
         self.alarmStatus = 0
         self.volume = 50;
+        self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
         self.keyboard = Controller()
         self.loop = loop
         self.name = 'frame'
@@ -494,6 +497,7 @@ class Window(Tk):
             scen["state"]="active"
         self.btnScenary["state"] = "active"
         self.default()
+
     async def scenary_action_2(self, btn):
         self.change_img(btn)
         self.blackout()
