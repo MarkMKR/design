@@ -432,31 +432,35 @@ class Window(Tk):
 
     async def camEnable(self, camName, cam):
         print(camName)
-        self.switchCam(cam)
-        cam = cv2.VideoCapture(camName, cv2.CAP_V4L)
-        self.status = not self.status
-        if self.status != False:
-            while (True):
-                if self.status == False:
-                    break
-                ret, image = cam.read()
-                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                cv2.moveWindow(self.name, 1920, 0)
-                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                cv2.imshow(self.name, image)
-                cv2.waitKey(1)
-                await asyncio.sleep(0.01)
-        else:
-            while (True):
-                if self.status == True:
-                    break
-                ret, image = cam.read()
-                cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                cv2.moveWindow(self.name, 1920, 0)
-                cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                cv2.imshow(self.name, image)
-                cv2.waitKey(1)
-                await asyncio.sleep(0.01)
+        try:
+            self.switchCam(cam)
+            cam = cv2.VideoCapture(camName, cv2.CAP_V4L)
+            self.status = not self.status
+            if self.status != False:
+                while (True):
+                    if self.status == False:
+                        break
+                    ret, image = cam.read()
+                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                    cv2.moveWindow(self.name, 1920, 0)
+                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                    cv2.imshow(self.name, image)
+                    cv2.waitKey(1)
+                    await asyncio.sleep(0.01)
+            else:
+                while (True):
+                    if self.status == True:
+                        break
+                    ret, image = cam.read()
+                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                    cv2.moveWindow(self.name, 1920, 0)
+                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                    cv2.imshow(self.name, image)
+                    cv2.waitKey(1)
+                    await asyncio.sleep(0.01)
+        except:
+            await self.camEnable(camName, cam)
+
 
     async def scenary_action_1(self, btn):
         self.change_img(btn)
