@@ -443,6 +443,9 @@ class Window(Tk):
                         cv2.destroyAllWindows()
                         break
                     ret, image = cam.read()
+                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                    cv2.moveWindow(self.name, 1920, 0)
+                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
                     cv2.imshow(self.name, image)
                     cv2.waitKey(1)
                     await asyncio.sleep(0.01)
@@ -453,6 +456,9 @@ class Window(Tk):
                         cv2.destroyAllWindows()
                         break
                     ret, image = cam.read()
+                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
+                    cv2.moveWindow(self.name, 1920, 0)
+                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
                     cv2.imshow(self.name, image)
                     cv2.waitKey(1)
                     await asyncio.sleep(0.01)
