@@ -519,7 +519,7 @@ class Window(Tk):
         self.ledSerial('LEDWRITE', 46, 255)
         self.fireSerialSingle(39)
         await asyncio.sleep(5)
-        self.smokeSerial(1)
+        self.smokeSerial(8)
         await asyncio.sleep(1)
         self.ledSerial('LEDWRITE', 46, 0)
         await asyncio.sleep(3)
