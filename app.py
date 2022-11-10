@@ -434,7 +434,7 @@ class Window(Tk):
         print(camName)
         try:
             self.switchCam(cam)
-            cam = cv2.VideoCapture(camName, cv2.CAP_V4L)
+            cam = cv2.VideoCapture(camName)
             self.status = not self.status
             if self.status != False:
                 while (True):
