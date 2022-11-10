@@ -459,8 +459,9 @@ class Window(Tk):
                     cv2.waitKey(1)
                     await asyncio.sleep(0.01)
         except:
+            await asyncio.sleep(.1)
             await self.camEnable(camName, cam)
-            await asyncio.sleep(.2)
+            await asyncio.sleep(.1)
 
 
     async def scenary_action_1(self, btn):
