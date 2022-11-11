@@ -1,4 +1,5 @@
 import os
+import threading
 import time
 from asyncio import Future
 from tkinter import *
@@ -11,7 +12,40 @@ import serial
 import pyautogui
 from random import randrange
 from video_capture import VideoCaptureAsync
+from threading import Event
+
 mixer.init()
+
+class camThread(threading.Thread):
+    def __init__(self, previewName, camID, event):
+        threading.Thread.__init__(self)
+        self.previewName = previewName
+        self.camID = camID
+        self.event = event
+    def run(self):
+        camPreview(self.previewName, self.camID, self.event)
+
+def camPreview(previewName, camID, event):
+    cv2.namedWindow(previewName)
+    cam = cv2.VideoCapture(camID)
+    if cam.isOpened():  # try to get the first frame
+        rval, frame = cam.read()
+    else:
+        rval = False
+
+    while rval:
+
+        cv2.imshow(previewName, frame)
+        rval, frame = cam.read()
+        cv2.namedWindow(previewName, cv2.WND_PROP_FULLSCREEN)
+        cv2.moveWindow(previewName, 1920, 0)
+        cv2.setWindowProperty(previewName, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+        key = cv2.waitKey(20)
+        if event.is_set():
+            break
+    cv2.destroyWindow(previewName)
+
+# Create two threads as follows
 
 class App:
     async def exec(self):
@@ -193,13 +227,13 @@ class Window(Tk):
         self.btnCam2 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(1, self.btnCam2)), 0)
         self.btnCam3 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(4, self.btnCam3)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(2, self.btnCam3)), 0)
         self.btnCam4 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(0, self.btnCam4)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(3, self.btnCam4)), 0)
         self.btnCam5 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(1, self.btnCam5)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(4, self.btnCam5)), 0)
         self.btnCam6 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(4, self.btnCam6)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(5, self.btnCam6)), 0)
 
         self.btnFire1 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
                                             lambda: self.loop.create_task(self.fire(16, 31, self.btnFire1)), 0)
@@ -431,41 +465,24 @@ class Window(Tk):
         camInstance["state"] = "disable"
 
     async def camEnable(self, camName, cam):
-        print(camName)
+        num = randrange(100000)
+        print('cur:' + str(num))
         try:
-            self.switchCam(cam)
-            cam = cv2.VideoCapture(camName)
-            self.status = not self.status
-            if self.status != False:
-                while (True):
-                    if self.status == False:
-                        cam.release()
-                        cv2.destroyAllWindows()
-                        break
-                    ret, image = cam.read()
-                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                    cv2.moveWindow(self.name, 1920, 0)
-                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                    cv2.imshow(self.name, image)
-                    cv2.waitKey(1)
-                    await asyncio.sleep(0.01)
-            else:
-                while (True):
-                    if self.status == True:
-                        cam.release()
-                        cv2.destroyAllWindows()
-                        break
-                    ret, image = cam.read()
-                    cv2.namedWindow(self.name, cv2.WND_PROP_FULLSCREEN)
-                    cv2.moveWindow(self.name, 1920, 0)
-                    cv2.setWindowProperty(self.name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                    cv2.imshow(self.name, image)
-                    cv2.waitKey(1)
-                    await asyncio.sleep(0.01)
+            prev = getattr(self, 'prev')
+            print('prev:'+str(prev))
+            getattr(self, str(prev)+'_event').set()
         except:
-            await asyncio.sleep(.1)
-            await self.camEnable(camName, cam)
-            await asyncio.sleep(.1)
+            print('gas')
+        setattr(self, 'prev', num)
+        prevEvent = str(num)+'_event'
+        setattr(self, prevEvent, Event())
+        setattr(self, str(num), camThread("Camera 1", camName, getattr(self, prevEvent)))
+        getattr(self, str(num)).start()
+        print('started')
+        #self.thread2status = False
+        #self.t0 = Event()
+        #self.thread0 = camThread("Camera 1", 0, self.t0)
+
 
 
     async def scenary_action_1(self, btn):
