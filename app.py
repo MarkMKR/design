@@ -1,18 +1,15 @@
 import os
 import threading
-import time
-from asyncio import Future
 from tkinter import *
 import asyncio
 from PIL import ImageTk, Image
 from pygame import mixer
 import cv2
-from pynput.keyboard import Key, Controller
-import serial
-import pyautogui
+from pynput import keyboard
+from pynput.keyboard import Controller
 from random import randrange
-from video_capture import VideoCaptureAsync
 from threading import Event
+from pynput.keyboard import Key,Controller
 
 mixer.init()
 
@@ -60,8 +57,20 @@ class WD_Images(Tk):
         self.manual = "img/manual.png"
         self.scenary_btn = "img/scenary.png"
 
-        self.scenary_1 = "img/scenary-1.png"
-        self.scenary_active_1 = "img/scenary-active-1.png"
+        self.scenary_1 = "img/child.png"
+        self.scenary_active_1 = "img/child-active.png"
+
+        self.scenary_2 = "img/cotel.png"
+        self.scenary_active_2 = "img/cotel-active.png"
+
+        self.scenary_3 = "img/sleep.png"
+        self.scenary_active_3 = "img/sleep-active.png"
+
+        self.scenary_4 = "img/main.png"
+        self.scenary_active_4 = "img/main-active.png"
+
+        self.scenary_5 = "img/kitchen.png"
+        self.scenary_active_5 = "img/kitchen-active.png"
 
         self.door = "img/door.png"
         self.door_active = "img/door-active.png"
@@ -147,6 +156,7 @@ class Window(Tk):
         self.root = Tk()
         self.root.geometry("1020x600")
         self.root.config(background='#ffffff')
+        self.keyboard = Controller()
 
         self.app_backround = ImageTk.PhotoImage(Image.open("img/back.png").resize((1024, 585)))
         self.label1 = Label(self.root, image=self.app_backround, background='#ffffff', padx=50, pady=50)
@@ -465,7 +475,8 @@ class Window(Tk):
         camInstance["state"] = "disable"
 
     async def camEnable(self, camName, cam):
-        num = randrange(100000)
+        self.switchCam(cam)
+        num = randrange(1000000)
         print('cur:' + str(num))
         try:
             prev = getattr(self, 'prev')
@@ -485,7 +496,7 @@ class Window(Tk):
 
 
 
-    async def scenary_action_1(self, btn):
+    async  def scenary_action_1(self, btn):
         self.change_img(btn)
         self.blackout()
         for scen in self.scenaries:
@@ -742,19 +753,19 @@ class Window(Tk):
                                             lambda: self.loop.create_task(self.scenary_action_1(self.scenary1)), 0, 400, 50)
         self.scenary1.place(x=300, y=100)  # floor 3 l
 
-        self.scenary2 = self.btn_father_sc.btn(self.img_father.scenary_1, self.img_father.scenary_active_1,
+        self.scenary2 = self.btn_father_sc.btn(self.img_father.scenary_2, self.img_father.scenary_active_2,
                                             lambda: self.loop.create_task(self.scenary_action_2(self.scenary2)), 0, 400, 50)
         self.scenary2.place(x=300, y=170)  # floor 3 l
 
-        self.scenary3 = self.btn_father_sc.btn(self.img_father.scenary_1, self.img_father.scenary_active_1,
+        self.scenary3 = self.btn_father_sc.btn(self.img_father.scenary_3, self.img_father.scenary_active_3,
                                             lambda: self.loop.create_task(self.scenary_action_3(self.scenary3)), 0, 400, 50)
         self.scenary3.place(x=300, y=240)  # floor 3 l
 
-        self.scenary4 = self.btn_father_sc.btn(self.img_father.scenary_1, self.img_father.scenary_active_1,
+        self.scenary4 = self.btn_father_sc.btn(self.img_father.scenary_4, self.img_father.scenary_active_4,
                                             lambda: self.loop.create_task(self.scenary_action_4(self.scenary4)), 0, 400, 50)
         self.scenary4.place(x=300, y=310)  # floor 3 l
 
-        self.scenary5 = self.btn_father_sc.btn(self.img_father.scenary_1, self.img_father.scenary_active_1,
+        self.scenary5 = self.btn_father_sc.btn(self.img_father.scenary_5, self.img_father.scenary_active_5,
                                             lambda: self.loop.create_task(self.scenary_action_5(self.scenary5)), 0, 400, 50)
         self.scenary5.place(x=300, y=380)  # floor 3 l
 
@@ -846,16 +857,12 @@ class Window(Tk):
             self.blink(index, 200, 200)
         print('alarm' + str(index))                        
     async def volumeDown(self):
-        self.volume -= 10
-        if self.volume <= 9:
-            self.volume = 0;
-        os.system(f'amixer set Master {str(self.volume)}%')
+        self.keyboard.press(Key.media_volume_down)
+
 
     async def volumeUp(self):
-        self.volume += 10
-        if self.volume >= 91:
-            self.volume = 100;
-        os.system(f'amixer set Master {str(self.volume)}%')
+        self.keyboard.press(Key.media_volume_up)
+
 
 def main():
     asyncio.run(App().exec())
