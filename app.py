@@ -20,7 +20,7 @@ class camThread(threading.Thread):
         camPreview(self.previewName, self.camID, self.event)
 
 def camPreview(previewName, camID, event):
-    cv2.namedWindow(previewName)
+    cv2.namedWindow(previewName, cv2.WINDOW_NORMAL)
     cam = cv2.VideoCapture(camID)
     if cam.isOpened():  # try to get the first frame
         rval, frame = cam.read()
@@ -28,12 +28,10 @@ def camPreview(previewName, camID, event):
         rval = False
 
     while rval:
-
+        cv2.namedWindow(previewName, cv2.WINDOW_NORMAL)
         cv2.imshow(previewName, frame)
         rval, frame = cam.read()
-        cv2.namedWindow(previewName, cv2.WND_PROP_FULLSCREEN)
         cv2.moveWindow(previewName, 1920, 0)
-        cv2.setWindowProperty(previewName, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
         key = cv2.waitKey(20)
         if event.is_set():
             break
