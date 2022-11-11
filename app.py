@@ -1,12 +1,9 @@
-import os
 import threading
 from tkinter import *
 import asyncio
 from PIL import ImageTk, Image
 from pygame import mixer
 import cv2
-from pynput import keyboard
-from pynput.keyboard import Controller
 from random import randrange
 from threading import Event
 from pynput.keyboard import Key,Controller
@@ -148,7 +145,7 @@ class Window(Tk):
     def __init__(self, loop):
         self.alarmStatus = 0
         self.volume = 50;
-        self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
+        #self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
         self.keyboard = Controller()
         self.loop = loop
         self.name = 'frame'
@@ -468,14 +465,17 @@ class Window(Tk):
         return btn
 
     def switchCam(self, camInstance):
-        for camVal in self.cams:
-            camVal.config(image=camInstance.pasive)
-            camVal["state"] = "active"
-        self.change_img(camInstance)
-        camInstance["state"] = "disable"
+        if(camInstance != ''):
+            for camVal in self.cams:
+                camVal.config(image=camInstance.pasive)
+                camVal["state"] = "active"
+            self.change_img(camInstance)
+            camInstance["state"] = "disable"
 
     async def camEnable(self, camName, cam):
         self.switchCam(cam)
+        for smokeVal in self.cams:
+            smokeVal["state"]="disabled"
         num = randrange(1000000)
         print('cur:' + str(num))
         try:
@@ -490,14 +490,15 @@ class Window(Tk):
         setattr(self, str(num), camThread("Camera 1", camName, getattr(self, prevEvent)))
         getattr(self, str(num)).start()
         print('started')
-        #self.thread2status = False
-        #self.t0 = Event()
-        #self.thread0 = camThread("Camera 1", 0, self.t0)
+        await asyncio.sleep(3)
+        for smokeVal in self.cams:
+            smokeVal["state"]="active"
 
 
 
     async  def scenary_action_1(self, btn):
         self.change_img(btn)
+        self.loop.create_task(self.camEnable(0,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
@@ -541,9 +542,11 @@ class Window(Tk):
             scen["state"]="active"
         self.btnScenary["state"] = "active"
         self.default()
+        self.change_img(btn)
 
     async def scenary_action_2(self, btn):
         self.change_img(btn)
+        self.loop.create_task(self.camEnable(1,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"] = "disable"
@@ -593,10 +596,12 @@ class Window(Tk):
             scen["state"] = "active"
         self.btnScenary["state"] = "active"
         self.default()
+        self.change_img(btn)
 
 
     async def scenary_action_3(self, btn):
         self.change_img(btn)
+        self.loop.create_task(self.camEnable(2,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
@@ -634,6 +639,7 @@ class Window(Tk):
             scen["state"]="active"
         self.btnScenary["state"] = "active"
         self.default()
+        self.change_img(btn)
 
     async def sound(self):
         self.alarmStatus = not self.alarmStatus
@@ -646,6 +652,7 @@ class Window(Tk):
 
     async def scenary_action_4(self, btn):
         self.change_img(btn)
+        self.loop.create_task(self.camEnable(3,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
@@ -694,9 +701,11 @@ class Window(Tk):
             scen["state"]="active"
         self.btnScenary["state"] = "active"
         self.default()
+        self.change_img(btn)
 
     async def scenary_action_5(self, btn):
         self.change_img(btn)
+        self.loop.create_task(self.camEnable(4,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
@@ -739,6 +748,7 @@ class Window(Tk):
             scen["state"]="active"
         self.btnScenary["state"] = "active"
         self.default()
+        self.change_img(btn)
 
     async def new(self):
         self.scenary = Toplevel()
@@ -774,6 +784,13 @@ class Window(Tk):
         self.btnScenary = self.btn_father_sc.btn(self.img_father.scenary_btn,self.img_father.scenary_btn,
                                                  lambda: self.loop.create_task(self.scenary_close()), 0, 222, 46)
         self.btnScenary.place(x=20, y=20)
+
+        self.btnVolumeUp = self.btn_father_sc.btn(self.img_father.volumeUp, self.img_father.volumeUp,
+                                               lambda: self.loop.create_task(self.volumeUp()), 0)
+        self.btnVolumeDown = self.btn_father_sc.btn(self.img_father.volumeDown, self.img_father.volumeDown,
+                                                 lambda: self.loop.create_task(self.volumeDown()), 0)
+        self.btnVolumeUp.place(x=870, y=20)
+        self.btnVolumeDown.place(x=800, y=20)
 
     async def scenary_close(self):
         self.scenary.destroy()
@@ -867,6 +884,4 @@ class Window(Tk):
 def main():
     asyncio.run(App().exec())
 
-
-if __name__ == '__main__':
-    main()
+main()
