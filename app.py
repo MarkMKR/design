@@ -219,15 +219,15 @@ class Window(Tk):
         self.btnSmoke0 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
                                              lambda: self.loop.create_task(self.smoke(6, self.btnSmoke0)), 0)
         self.btnSmoke1 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(7, self.btnSmoke1)), 0)
+                                             lambda: self.loop.create_task(self.smoke(10, self.btnSmoke1)), 0)
         self.btnSmoke2 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(8, self.btnSmoke2)), 0)
+                                             lambda: self.loop.create_task(self.smoke(11, self.btnSmoke2)), 0)
         self.btnSmoke3 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
                                              lambda: self.loop.create_task(self.smoke(9, self.btnSmoke3)), 0)
         self.btnSmoke4 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(10, self.btnSmoke4)), 0)
+                                             lambda: self.loop.create_task(self.smoke(7, self.btnSmoke4)), 0)
         self.btnSmoke5 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(11, self.btnSmoke5)), 0)
+                                             lambda: self.loop.create_task(self.smoke(8, self.btnSmoke5)), 0)
 
         self.btnCam1 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(0, self.btnCam1)), 0)
@@ -546,7 +546,7 @@ class Window(Tk):
 
     async def scenary_action_2(self, btn):
         self.change_img(btn)
-        self.loop.create_task(self.camEnable(1,''))
+        self.loop.create_task(self.camEnable(5,''))#was1
         self.blackout()
         for scen in self.scenaries:
             scen["state"] = "disable"
@@ -601,7 +601,7 @@ class Window(Tk):
 
     async def scenary_action_3(self, btn):
         self.change_img(btn)
-        self.loop.create_task(self.camEnable(2,''))
+        self.loop.create_task(self.camEnable(1,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
@@ -610,6 +610,7 @@ class Window(Tk):
         await asyncio.sleep(5)
         self.ledSerial('LEDWRITE', 8, 255)
         await asyncio.sleep(5)
+        self.smokeSerial(7)
         self.fireSerial(41,40)
         await asyncio.sleep(1)
         self.ledSerial('LEDWRITE', 8, 0)
