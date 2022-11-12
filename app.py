@@ -1,6 +1,8 @@
 import threading
 from tkinter import *
 import asyncio
+
+import serial
 from PIL import ImageTk, Image
 from pygame import mixer
 import cv2
@@ -143,7 +145,7 @@ class Window(Tk):
     def __init__(self, loop):
         self.alarmStatus = 0
         self.volume = 50;
-        #self.arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=57600)
+        self.arduino = serial.Serial(port='COM3', baudrate=57600)
         self.keyboard = Controller()
         self.loop = loop
         self.name = 'frame'
