@@ -37,7 +37,7 @@ def camPreview(previewName, camID, event):
         cv2.namedWindow(previewName, cv2.WINDOW_NORMAL)
         cv2.imshow(previewName, frame)
         rval, frame = cam.read()
-        cv2.moveWindow(previewName, 1920, 0)
+        cv2.moveWindow(previewName, 1024, 0)
         key = cv2.waitKey(20)
         if event.is_set():
             break
