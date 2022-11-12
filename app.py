@@ -23,7 +23,11 @@ class camThread(threading.Thread):
 
 def camPreview(previewName, camID, event):
     cv2.namedWindow(previewName, cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty(previewName, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     cam = cv2.VideoCapture(camID)
+    cam.set(cv2.CAP_PROP_FPS, 60.0)
+    codec = 0x47504A4D  # MJPG
+    cam.set(cv2.CAP_PROP_FOURCC, codec)
     if cam.isOpened():  # try to get the first frame
         rval, frame = cam.read()
     else:
@@ -145,7 +149,6 @@ class Window(Tk):
     def __init__(self, loop):
         self.alarmStatus = 0
         self.volume = 50;
-        self.arduino = serial.Serial(port='COM3', baudrate=57600)
         self.keyboard = Controller()
         self.loop = loop
         self.name = 'frame'
