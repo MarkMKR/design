@@ -123,6 +123,9 @@ class WD_Images(Tk):
 
         self.wilka = "img/wilka.png"
         self.wilka_active = "img/wilka-active.png"
+
+        self.cook = "img/food.png"
+        self.cook_active = "img/food-active.png"
 class WD_Button(Tk):
     count = 0
     def __init__(self, root):
@@ -155,9 +158,11 @@ class Window(Tk):
         self.name = 'frame'
         self.status = False
         self.root = Tk()
-        self.root.geometry("1020x600")
         self.root.config(background='#ffffff')
         self.keyboard = Controller()
+        width = self.root.winfo_screenwidth()
+        height = self.root.winfo_screenheight()
+        self.root.geometry("%dx%d" % (width, height))
 
         self.app_backround = ImageTk.PhotoImage(Image.open("img/back.png").resize((1024, 585)))
         self.label1 = Label(self.root, image=self.app_backround, background='#ffffff', padx=50, pady=50)
@@ -293,10 +298,10 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.panel(28, self.btnPanel5)), 0)
         self.btnPanel6 = self.btn_father.btn(self.img_father.panel, self.img_father.panel_active,
                                              lambda: self.loop.create_task(self.panel(30, self.btnPanel6)), 0)
-        self.btnPanel7 = self.btn_father.btn(self.img_father.panel, self.img_father.panel_active,
+        self.btnPanel7 = self.btn_father.btn(self.img_father.cook, self.img_father.cook_active,
                                              lambda: self.loop.create_task(self.fireSingle(37, self.btnPanel7)), 1)
 
-        self.btnTorch = self.btn_father.btn(self.img_father.torch, self.img_father.torch_active, lambda: self.loop.create_task(self.light(40, self.btnTorch)), 1)
+        self.btnTorch = self.btn_father.btn(self.img_father.torch, self.img_father.torch_active, lambda: self.loop.create_task(self.fireSingle(40, self.btnTorch)), 1)
         self.btnFan = self.btn_father.btn(self.img_father.vent, self.img_father.vent_active, lambda: self.loop.create_task(self.fan(self.btnFan)), 0)
         self.btnBalon = self.btn_father.btn(self.img_father.balon, self.img_father.balon_active, lambda: self.loop.create_task(self.light(21, self.btnBalon)), 0)
         self.btnKotel = self.btn_father.btn(self.img_father.kotel, self.img_father.kotel_active, lambda: self.loop.create_task(self.fireSingle(17, self.btnKotel)), 1)
@@ -510,11 +515,13 @@ class Window(Tk):
         ##############
         await asyncio.sleep(5)
         self.fireSerial(34, 63)
+        await asyncio.sleep(.1)
         self.ledSerial('LEDWRITE', 12, 255)
         await asyncio.sleep(5)
         self.smokeSerial(6)
-        await asyncio.sleep(5)
+        await asyncio.sleep(6)
         self.ledSerial('LEDWRITE', 34, 0)
+        await asyncio.sleep(.1)
         self.ledSerial('LEDWRITE', 12, 0)
         await asyncio.sleep(1)
         self.blink(26, 200, 200)
@@ -556,19 +563,20 @@ class Window(Tk):
         ##############
         await asyncio.sleep(5)
         self.ledSerial('LEDWRITE', 46, 255)
+        await asyncio.sleep(.1)
         self.fireSerialSingle(39)
         await asyncio.sleep(5)
         self.smokeSerial(8)
-        await asyncio.sleep(5)
+        await asyncio.sleep(6)
         self.ledSerial('LEDWRITE', 46, 0)
         await asyncio.sleep(1)
         self.fireSerial(38,42)
         await asyncio.sleep(.3)
         self.blink(20, 200, 200)
         await self.sound()
-        await asyncio.sleep(3)
+        await asyncio.sleep(8)
         self.ledSerial('LEDWRITE', 21, 255)
-        await asyncio.sleep(.5)
+        await asyncio.sleep(2)
         self.ledSerial('LEDWRITE', 21, 0)
         await asyncio.sleep(10)
         self.servo('SERVOOPEN', 1)
@@ -611,10 +619,12 @@ class Window(Tk):
         ##############
         await asyncio.sleep(5)
         self.ledSerial('LEDWRITE', 8, 255)
+        self.fireSerial(40,63)
         await asyncio.sleep(5)
         self.smokeSerial(10)
-        await asyncio.sleep(5)
-        self.fireSerial(41,40)
+        await asyncio.sleep(6)
+        self.fireSerial(41,63)
+        await asyncio.sleep(.1)
         self.ledSerial('LEDWRITE', 8, 0)
         await asyncio.sleep(.3)
         self.blink(24, 200, 200)
@@ -669,8 +679,9 @@ class Window(Tk):
         self.ledSerial('LEDWRITE', 54, 255)
         await asyncio.sleep(5)
         self.smokeSerial(9)
-        await asyncio.sleep(5)
+        await asyncio.sleep(6)
         self.ledSerial('LEDWRITE', 13, 0)
+        await asyncio.sleep(.1)
         self.blink(27, 200, 200)
         await self.sound()
         await asyncio.sleep(1)
@@ -720,14 +731,16 @@ class Window(Tk):
         self.fireSerialSingle(37)
         await asyncio.sleep(6)
         self.smokeSerial(7)
-        await asyncio.sleep(5)
+        await asyncio.sleep(6)
         self.ledSerial('LEDWRITE', 4, 0)
+        await asyncio.sleep(.1)
+        self.ledSerial('LEDWRITE', 37, 0)
+        await asyncio.sleep(.1)
         self.blink(36, 200, 200)
         await self.sound()
         await asyncio.sleep(1)
         self.fireSerial(35,53)
         await asyncio.sleep(.5)
-        self.ledSerial('LEDWRITE', 37, 0)
         await asyncio.sleep(10)
         self.servo('SERVOOPEN', 3)
         await asyncio.sleep(1)
@@ -757,7 +770,9 @@ class Window(Tk):
         self.scenary = Toplevel()
         self.scenary.geometry("1020x600")
         self.scenary.config(background='#ffffff')
-
+        width = self.scenary.winfo_screenwidth()
+        height = self.scenary.winfo_screenheight()
+        self.scenary.geometry("%dx%d" % (width, height))
 
 
         self.btn_father_sc = WD_Button(self.scenary)
@@ -831,7 +846,7 @@ class Window(Tk):
         for smokeVal in self.smokes:
             smokeVal["state"]="disabled"
         self.smokeSerial(index)
-        await asyncio.sleep(5)
+        await asyncio.sleep(8)
         self.change_img(smoke)
         for smokeVal in self.smokes:
             smokeVal["state"]="active"
