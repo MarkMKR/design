@@ -19,7 +19,11 @@ class camThread(threading.Thread):
         self.camID = camID
         self.event = event
     def run(self):
-        camPreview(self.previewName, self.camID, self.event)
+        try:
+            camPreview(self.previewName, self.camID, self.event)
+        except:
+            camPreview(self.previewName, self.camID, self.event)
+
 
 def camPreview(previewName, camID, event):
     cv2.namedWindow(previewName, cv2.WND_PROP_FULLSCREEN)
