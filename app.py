@@ -1,7 +1,7 @@
 import threading
 from tkinter import *
 import asyncio
-
+import time
 import serial
 from PIL import ImageTk, Image
 from pygame import mixer
@@ -246,11 +246,11 @@ class Window(Tk):
         self.btnCam2 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(0, self.btnCam2)), 0)
         self.btnCam3 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(1  , self.btnCam3)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(5  , self.btnCam3)), 0)
         self.btnCam4 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(2, self.btnCam4)), 0)
         self.btnCam5 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(5, self.btnCam5)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(1, self.btnCam5)), 0)
         self.btnCam6 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(3, self.btnCam6)), 0)
 
@@ -390,9 +390,18 @@ class Window(Tk):
 
         self.btnVolumeUp.place(x=30, y=125)
         self.btnVolumeDown.place(x=100, y=125)
-
+    
+        time.sleep(3)
         self.cams = [self.btnCam6,self.btnCam5, self.btnCam4, self.btnCam3, self.btnCam2, self.btnCam1]
         self.smokes = [self.btnSmoke5, self.btnSmoke4, self.btnSmoke3, self.btnSmoke2, self.btnSmoke0, self.btnSmoke1]
+        self.fakeSmoke(6, self.btnSmoke0)
+    def smokeSerial(self, param1):
+        string = "<SMOKE" + "\0" + str(param1) + ">"
+        print(string)
+        self.arduino.write(bytes(string, 'utf-8'))
+        data = self.arduino.read_all()
+        print(data.decode())
+        self.arduino.write(bytes(string, 'utf-8'))
 
     def ledSerial(self, method, param1, param2):
         string = "<LEDWRITE" + "\0" + str(param1) + "\0" + str(param2) + ">"
@@ -425,13 +434,7 @@ class Window(Tk):
         print(data.decode())
         self.arduino.write(bytes(string, 'utf-8'))
 
-    def smokeSerial(self, param1):
-        string = "<SMOKE" + "\0" + str(param1) + ">"
-        print(string)
-        self.arduino.write(bytes(string, 'utf-8'))
-        data = self.arduino.read_all()
-        print(data.decode())
-        self.arduino.write(bytes(string, 'utf-8'))
+
 
     def blink(self, param1, param2, param3):
         string = "<LEDBLINK" + "\0" + str(param1) + "\0" + str(param2) + "\0" + str(param3) + ">"
@@ -717,7 +720,7 @@ class Window(Tk):
 
     async def scenary_action_5(self, btn):
         self.change_img(btn)
-        self.loop.create_task(self.camEnable(5,''))
+        self.loop.create_task(self.camEnable(1,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
@@ -842,11 +845,19 @@ class Window(Tk):
         for smokeVal in self.smokes:
             smokeVal["state"]="disabled"
         self.smokeSerial(index)
-        await asyncio.sleep(8)
+        await asyncio.sleep(11)
         self.change_img(smoke)
         for smokeVal in self.smokes:
             smokeVal["state"]="active"
-
+    def fakeSmoke(self, index, smoke):
+        self.change_img(smoke)
+        for smokeVal in self.smokes:
+            smokeVal["state"]="disabled"
+        self.smokeSerial(index)
+        time.sleep(11)
+        self.change_img(smoke)
+        for smokeVal in self.smokes:
+            smokeVal["state"]="active"
     async def fire(self, index1, index2, fire):
         self.change_img(fire)
         status = 0 if fire.status == 0 else 255
