@@ -85,8 +85,8 @@ class WD_Images(Tk):
         self.door = "img/door.png"
         self.door_active = "img/door-active.png"
 
-        self.emerncy = "img/emerncy.png"
-        self.emerncy_active = "img/emerncy-active.png"
+        self.emergency = "img/emergency.png"
+        self.emergency_active = "img/emergency-active.png"
 
         self.cam = "img/cam.png"
         self.cam_active = "img/cam-active.png"
@@ -175,6 +175,7 @@ class Window(Tk):
 
     def __init__(self, loop):
         self.alarmStatus = 0
+        self.fireFighterStatus = 0
         self.volume = 50;
         self.keyboard = Controller()
         self.loop = loop
@@ -184,6 +185,16 @@ class Window(Tk):
         self.root.config(background='#ffffff')
         self.keyboard = Controller()
         self.root.geometry("%dx%d" % (1024, 600))
+        self.arduino = serial.Serial(port='COM6', baudrate=57600)
+        # while True:
+        #     id = input('id')
+        #     self.blackout()
+        #     string = "<LEDWRITE" + "\0" + id + "\0" + '255' + ">"
+        #     print(string)
+        #     self.arduino.write(bytes(string, 'utf-8'))
+        #     data = self.arduino.read_all()
+        #     print(data.decode())
+        #     self.arduino.write(bytes(string, 'utf-8'))
 
         self.app_backround = ImageTk.PhotoImage(Image.open("img/back.jpg").resize((1024, 550)))
         self.label1 = Label(self.root, image=self.app_backround, background='#ffffff', padx=50, pady=50)
@@ -198,6 +209,7 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.none()), 0, 580, 4)
         self.office = self.btn_father.btn(self.img_father.office_text, self.img_father.office_text,
                                              lambda: self.loop.create_task(self.none()), 0, 35, 14)
+
         self.office.place(x=700, y=167)
         self.kitchen = self.btn_father.btn(self.img_father.kitchen_text, self.img_father.kitchen_text,
                                              lambda: self.loop.create_task(self.none()), 0, 50, 12)
@@ -218,125 +230,126 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.none()), 0, 222, 46)
         self.btnManual = self.btn_father.btn(self.img_father.manual, self.img_father.manual,
                                              lambda: self.loop.create_task(self.new()), 0, 222,46)
+
         self.btnDoor5 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(5, self.btnDoor5)), 0)
+                                            lambda: self.loop.create_task(self.door(11, self.btnDoor5)), 0)
         self.btnDoor2 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(2, self.btnDoor2)), 0)
+                                            lambda: self.loop.create_task(self.door(8, self.btnDoor2)), 0)
         self.btnDoor4 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(4, self.btnDoor4)), 0)
+                                            lambda: self.loop.create_task(self.door(9, self.btnDoor4)), 0)
         self.btnDoor3 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(3, self.btnDoor3)), 0)
+                                            lambda: self.loop.create_task(self.door(10, self.btnDoor3)), 0)
         self.btnDoor1 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(1, self.btnDoor1)), 0)
+                                            lambda: self.loop.create_task(self.door(7, self.btnDoor1)), 0)
         self.btnDoor6 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(1, self.btnDoor6)), 0)
+                                            lambda: self.loop.create_task(self.door(12, self.btnDoor6)), 0)
         self.btnDoor7 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(1, self.btnDoor7)), 0)
+                                            lambda: self.loop.create_task(self.door(13, self.btnDoor7)), 0)
         self.btnDoor8 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(1, self.btnDoor8)), 0)
+                                            lambda: self.loop.create_task(self.door(14, self.btnDoor8)), 0)
         self.btnPanel1 = self.btn_father.btn(self.img_father.panel, self.img_father.panel_active,
-                                             lambda: self.loop.create_task(self.panel(23, self.btnPanel1)), 0)
+                                             lambda: self.loop.create_task(self.serverBlink(self.btnPanel1)), 1)
 
         self.btnLight1 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(12, self.btnLight1)), 1)
+                                             lambda: self.loop.create_task(self.light(37, self.btnLight1)), 1)
         self.btnLight2 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(0, self.btnLight2)), 1)
+                                             lambda: self.loop.create_task(self.light(38, self.btnLight2)), 1)
         self.btnLight3 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(44, self.btnLight3)), 1)
+                                             lambda: self.loop.create_task(self.light(34, self.btnLight3)), 1)
         self.btnLight4 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(45, self.btnLight4)), 1)
+                                             lambda: self.loop.create_task(self.light(35, self.btnLight4)), 1)
         self.btnLight5 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(13, self.btnLight5)), 1)
+                                             lambda: self.loop.create_task(self.light(47, self.btnLight5)), 1)
         self.btnLight6 = self.btn_father.btn(self.img_father.led, self.img_father.led_active,
-                                             lambda: self.loop.create_task(self.light(4, self.btnLight6)), 1)  #kitchen
+                                             lambda: self.loop.create_task(self.emergencyLight(self.btnLight6)), 0)  #kitchen
         self.btnLight7 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(47, self.btnLight7)), 1)
+                                             lambda: self.loop.create_task(self.light(32, self.btnLight7)), 1)
         self.btnLight8 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(46, self.btnLight8)), 1)
+                                             lambda: self.loop.create_task(self.light(33, self.btnLight8)), 1)
         self.btnLight9 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(46, self.btnLight9)), 1)
+                                             lambda: self.loop.create_task(self.light(48, self.btnLight9)), 1)
         self.btnLight10 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(46, self.btnLight10)), 1)
+                                             lambda: self.loop.create_task(self.light(48, self.btnLight10)), 1)
         self.btnLight11 = self.btn_father.btn(self.img_father.light, self.img_father.light_active,
-                                             lambda: self.loop.create_task(self.light(46, self.btnLight11)), 1)
+                                             lambda: self.loop.create_task(self.light(36, self.btnLight11)), 1)
+
         self.btnSmoke1 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(10, self.btnSmoke1)), 0)
+                                             lambda: self.loop.create_task(self.door(0, self.btnSmoke1)), 0)
         self.btnSmoke2 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(11, self.btnSmoke2)), 0)
+                                             lambda: self.loop.create_task(self.door(1, self.btnSmoke2)), 0)
         self.btnSmoke3 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(9, self.btnSmoke3)), 0)
+                                             lambda: self.loop.create_task(self.door(2, self.btnSmoke3)), 0)
         self.btnSmoke4 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(7, self.btnSmoke4)), 0)
+                                             lambda: self.loop.create_task(self.door(6, self.btnSmoke4)), 0)
         self.btnSmoke5 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(8, self.btnSmoke5)), 0)
+                                             lambda: self.loop.create_task(self.door(5, self.btnSmoke5)), 0)
         self.btnSmoke6 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(8, self.btnSmoke6)), 0)
+                                             lambda: self.loop.create_task(self.door(4, self.btnSmoke6)), 0)
         self.btnSmoke7 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(8, self.btnSmoke7)), 0)
+                                             lambda: self.loop.create_task(self.door(3, self.btnSmoke7)), 0)
 
         self.btnCam1 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(4, self.btnCam1)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(0, self.btnCam1)), 0)
         self.btnCam2 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(0, self.btnCam2)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(1, self.btnCam2)), 0)
         self.btnCam3 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(5  , self.btnCam3)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(2  , self.btnCam3)), 0)
         self.btnCam4 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(2, self.btnCam4)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(3, self.btnCam4)), 0)
         self.btnCam5 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(1, self.btnCam5)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(4, self.btnCam5)), 0)
         self.btnCam6 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(3, self.btnCam6)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(5, self.btnCam6)), 0)
         self.btnCam7 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(3, self.btnCam7)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(6, self.btnCam7)), 0)
         self.btnCam8 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(3, self.btnCam8)), 0)
-        self.btnFire1 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fire(16, 31, self.btnFire1)), 0)
-        self.btnFire2 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fireSingle(41, self.btnFire2)), 0)
-        self.btnFire3 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fire(35, 53, self.btnFire3)), 0)
-        self.btnFire5 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fireSingle(22, self.btnFire5)), 0)
-        self.btnFire4 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fireSingle(22, self.btnFire4)), 0)
-        self.btnFire6 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fire(38, 42, self.btnFire6)), 0)
-        self.btnFire7 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fire(38, 42, self.btnFire7)), 0)
-        self.btnAlarm1 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: [self.loop.create_task(self.alarm(26, self.btnAlarm1)), self.loop.create_task(self.sound())], 0)
-        self.btnAlarm2 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: [self.loop.create_task(self.alarm(24, self.btnAlarm2)), self.loop.create_task(self.sound())], 0)
-        self.btnAlarm3 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: [self.loop.create_task(self.alarm(36, self.btnAlarm3)), self.loop.create_task(self.sound())], 0)
-        self.btnAlarm4 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: [self.loop.create_task(self.alarm(29, self.btnAlarm4)), self.loop.create_task(self.sound())], 0)
-        self.btnAlarm5 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: [self.loop.create_task(self.alarm(27, self.btnAlarm5)), self.loop.create_task(self.sound())], 0)
-        self.btnAlarm6 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: [self.loop.create_task(self.alarm(20, self.btnAlarm6)), self.loop.create_task(self.sound())], 0)
-        self.btnAlarm7 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: [self.loop.create_task(self.alarm(20, self.btnAlarm7)), self.loop.create_task(self.sound())], 0)
-        self.btnAlarm8 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: [self.loop.create_task(self.alarm(20, self.btnAlarm8)), self.loop.create_task(self.sound())], 0)
-        self.btnEmergency = self.btn_father.btn(self.img_father.emerncy, self.img_father.emerncy_active,
-                                             lambda: self.loop.create_task(self.emergency(20, self.btnEmergency)), 0)
-        self.btnHair5 = self.btn_father.btn(self.img_father.wilka, self.img_father.wilka_active,
-                                            lambda: self.loop.create_task(self.fireSingle(34, self.btnHair5)), 1)
-        self.btnHair6 = self.btn_father.btn(self.img_father.hair_dryer, self.img_father.hair_dryer_active,
-                                            lambda: self.loop.create_task(self.fireSingle(33, self.btnHair6)), 1)
+                                           lambda: self.loop.create_task(self.camEnable(7, self.btnCam8)), 0)
 
+        self.btnFire1 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
+                                            lambda: self.loop.create_task(self.fireSingle(3, self.btnFire1)), 0)
+        self.btnFire2 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
+                                            lambda: self.loop.create_task(self.fireSingle(2, self.btnFire2)), 0)
+        self.btnFire3 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
+                                            lambda: self.loop.create_task(self.fireSingle(14, self.btnFire3)), 0)
+        self.btnFire5 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
+                                            lambda: self.loop.create_task(self.fireSingle(10, self.btnFire5)), 0)
+        self.btnFire4 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
+                                            lambda: self.loop.create_task(self.fireSingle(13, self.btnFire4)), 0)
+        self.btnFire6 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
+                                            lambda: self.loop.create_task(self.fire(10,8, self.btnFire6)), 0)
+        self.btnFire7 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
+                                            lambda: self.loop.create_task(self.fire(23, self.btnFire7)), 0)
+
+        self.btnAlarm1 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
+                                             lambda: [self.loop.create_task(self.alarm(7, self.btnAlarm1)), self.loop.create_task(self.sound())], 0)
+        self.btnAlarm2 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
+                                             lambda: [self.loop.create_task(self.alarm(1, self.btnAlarm2)), self.loop.create_task(self.sound())], 0)
+        self.btnAlarm3 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
+                                             lambda: [self.loop.create_task(self.alarm(15, self.btnAlarm3)), self.loop.create_task(self.sound())], 0)
+        self.btnAlarm4 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
+                                             lambda: [self.loop.create_task(self.alarm(12, self.btnAlarm4)), self.loop.create_task(self.sound())], 0)
+        self.btnAlarm5 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
+                                             lambda: [self.loop.create_task(self.alarm(11, self.btnAlarm5)), self.loop.create_task(self.sound())], 0)
+        self.btnAlarm6 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
+                                             lambda: [self.loop.create_task(self.alarm(0, self.btnAlarm6)), self.loop.create_task(self.sound())], 0)
+        self.btnAlarm7 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
+                                             lambda: [self.loop.create_task(self.alarm(22, self.btnAlarm7)), self.loop.create_task(self.fireFighterSound())], 0)
+        self.btnAlarm8 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
+                                             lambda: [self.loop.create_task(self.alarm(0, self.btnAlarm8)), self.loop.create_task(self.sound())], 0)
+        self.btnAlarm9 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
+                                             lambda: [self.loop.create_task(self.alarm(9, self.btnAlarm9)), self.loop.create_task(self.sound())], 0)
+        self.btnEmergency = self.btn_father.btn(self.img_father.emergency_active, self.img_father.emergency,
+                                             lambda: self.loop.create_task(self.emergency(self.btnEmergency)), 0)
         self.btnVolumeUp = self.btn_father.btn(self.img_father.volumeUp, self.img_father.volumeUp,
                                                lambda: self.loop.create_task(self.volumeUp()), 0)
         self.btnVolumeDown = self.btn_father.btn(self.img_father.volumeDown, self.img_father.volumeDown,
                                                  lambda: self.loop.create_task(self.volumeDown()), 0)
 
-        self.btnFan1 = self.btn_father.btn(self.img_father.vent, self.img_father.vent_active, lambda: self.loop.create_task(self.fan(self.btnFan1)), 0)
+        self.btnFan1 = self.btn_father.btn(self.img_father.vent, self.img_father.vent_active, lambda: self.loop.create_task(self.fan(self.btnFan1, 1)), 0)
         self.btnFan1.place(x=360, y=110)
         self.btnLight10.place(x=410, y=110)
 
-        self.btnFan2 = self.btn_father.btn(self.img_father.vent, self.img_father.vent_active, lambda: self.loop.create_task(self.fan(self.btnFan2)), 0)
+        self.btnFan2 = self.btn_father.btn(self.img_father.vent, self.img_father.vent_active, lambda: self.loop.create_task(self.fan(self.btnFan2, 0)), 0)
 
         self.btnCam1.place(x=560, y=40)
         self.btnDoor1.place(x=615, y=40)
@@ -403,6 +416,7 @@ class Window(Tk):
         self.line1.place(x=350, y=365);
         self.line2.place(x=350, y=185);
         self.btnAlarm8.place(x=462, y=110)
+        self.btnAlarm9.place(x=615, y=400)
 
         self.cams = [self.btnCam6,self.btnCam5, self.btnCam4, self.btnCam3, self.btnCam2, self.btnCam1]
         self.smokes = [self.btnSmoke5, self.btnSmoke4, self.btnSmoke3, self.btnSmoke2, self.btnSmoke1]
@@ -413,9 +427,6 @@ class Window(Tk):
         data = self.arduino.read_all()
         print(data.decode())
         self.arduino.write(bytes(string, 'utf-8'))
-
-    def none(self):
-        print('none')
 
     def ledSerial(self, method, param1, param2):
         string = "<LEDWRITE" + "\0" + str(param1) + "\0" + str(param2) + ">"
@@ -449,9 +460,21 @@ class Window(Tk):
         self.arduino.write(bytes(string, 'utf-8'))
 
 #TODO end this
-    def emergency(self, method, param1):
-        print('emerncy')
-
+    async def emergency(self, emergency):
+        self.change_img(emergency)
+        status = 0 if emergency.status == 0 else 1
+        if status == 1:
+            self.blackout()
+            await asyncio.sleep(.1)
+            self.ledSerial('LEDWRITE', 20, 255)
+            await asyncio.sleep(.1)
+            self.ledSerial('LEDWRITE', 21, 255)
+        else:
+            self.default()
+            await asyncio.sleep(.1)
+            self.ledSerial('LEDWRITE', 20, 0)
+            await asyncio.sleep(.1)
+            self.ledSerial('LEDWRITE', 21, 0)
     def blink(self, param1, param2, param3):
         string = "<LEDBLINK" + "\0" + str(param1) + "\0" + str(param2) + "\0" + str(param3) + ">"
         print(string)
@@ -459,8 +482,8 @@ class Window(Tk):
         data = self.arduino.read_all()
         print(data.decode())
 
-    def serialFan(self, comand):
-        string = f"<{comand}>"
+    def serialFan(self, comand, id):
+        string = f"<{comand}"+ "\0" + id+">"
         print(string)
         self.arduino.write(bytes(string, 'utf-8'))
         data = self.arduino.read_all()
@@ -472,6 +495,26 @@ class Window(Tk):
         self.arduino.write(bytes(string, 'utf-8'))
         data = self.arduino.read_all()
         print(data.decode())
+
+    async def serverBlink(self, btn):
+        self.change_img(btn)
+        status = 0 if btn.status == 0 else 1
+        if status == 1:
+            await asyncio.sleep(.01)
+            self.blink(4, 400, 700)
+            await asyncio.sleep(.3)
+            self.blink(5, 650, 300)
+            await asyncio.sleep(.1)
+            self.blink(6, 500,900)
+            await asyncio.sleep(.01)
+        else:
+            await asyncio.sleep(.01)
+            self.ledSerial('LEDWRITE', 4, 0)
+            await asyncio.sleep(.2)
+            self.ledSerial('LEDWRITE', 5, 0)
+            await asyncio.sleep(.1)
+            self.ledSerial('LEDWRITE', 6, 0)
+            await asyncio.sleep(.01)
 
     def default(self):
         string = "<DEFAULT>"
@@ -686,6 +729,23 @@ class Window(Tk):
         else:
             mixer.music.stop()
 
+    async def fireFighterSound(self):
+        self.fireFighterStatus = not self.fireFighterStatus
+        if self.fireFighterStatus == 1:
+            mixer.music.load('img/firetruck.mp3')  # Loading Music File
+            mixer.music.play(fade_ms=2000)
+            await asyncio.sleep(.1)
+        else:
+            mixer.music.stop()
+
+    async def emergencyLight(self, btn):
+        self.change_img(btn)
+        status = 0 if btn.status == 0 else 255
+        self.ledSerial("LEDWRITE", 21, status)
+        await asyncio.sleep(.01)
+        self.ledSerial("LEDWRITE", 20, status)
+
+
     async def scenary_action_4(self, btn):
         self.change_img(btn)
         self.loop.create_task(self.camEnable(2,''))
@@ -862,10 +922,10 @@ class Window(Tk):
         status = 0 if light.status == 0 else 255
         self.ledSerial("LEDWRITE", index, status)
 
-    async def fan(self, fan):
+    async def fan(self, fan, id):
         self.change_img(fan)
         comand = 'FANOFF' if fan.status == 0 else 'FANON'
-        self.serialFan(comand)
+        self.serialFan(comand, str(id))
 
     async def smoke(self, index, smoke):
         self.change_img(smoke)
@@ -898,7 +958,7 @@ class Window(Tk):
         self.change_img(fire)
         status = 0 if fire.status == 0 else 255
         if status == 0:
-            self.ledSerial("LEDWRITE", index1, 0)  
+            self.ledSerial("LEDWRITE", index1, 0)
         else:
             self.fireSerialSingle(index1)
 
@@ -924,7 +984,7 @@ class Window(Tk):
             self.ledSerial('LEDWRITE',index, 0)
         else:
             self.blink(index, 200, 200)
-        print('alarm' + str(index))                        
+        print('alarm' + str(index))
     async def volumeDown(self):
         self.keyboard.press(Key.media_volume_down)
 
