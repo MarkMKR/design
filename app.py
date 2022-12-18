@@ -185,7 +185,7 @@ class Window(Tk):
         self.root.config(background='#ffffff')
         self.keyboard = Controller()
         self.root.geometry("%dx%d" % (1024, 600))
-        #self.arduino = serial.Serial(port='COM9', baudrate=57600)
+        self.arduino = serial.Serial(port='COM9', baudrate=57600)
         # while True:
         #     id = input('id')
         #     self.blackout()
