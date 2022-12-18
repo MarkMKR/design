@@ -185,7 +185,7 @@ class Window(Tk):
         self.root.config(background='#ffffff')
         self.keyboard = Controller()
         self.root.geometry("%dx%d" % (1024, 600))
-        self.arduino = serial.Serial(port='COM6', baudrate=57600)
+        self.arduino = serial.Serial(port='COM9', baudrate=57600)
         # while True:
         #     id = input('id')
         #     self.blackout()
@@ -289,21 +289,21 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.smoke(3, self.btnSmoke7)), 0)
 
         self.btnCam1 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(0, self.btnCam1)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(7, self.btnCam1)), 0)
         self.btnCam2 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(1, self.btnCam2)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(0, self.btnCam2)), 0)
         self.btnCam3 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(2, self.btnCam3)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(1, self.btnCam3)), 0)
         self.btnCam4 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(3, self.btnCam4)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(2, self.btnCam4)), 0)
         self.btnCam5 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(4, self.btnCam5)), 0)
         self.btnCam6 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(5, self.btnCam6)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(3, self.btnCam6)), 0)
         self.btnCam7 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(6, self.btnCam7)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(5, self.btnCam7)), 0)
         self.btnCam8 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(7, self.btnCam8)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(6, self.btnCam8)), 0)
 
         self.btnFire1 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
                                             lambda: self.loop.create_task(self.fireSingle(3, self.btnFire1)), 0)
@@ -613,7 +613,7 @@ class Window(Tk):
     async def scenary_action_2(self, btn):
         self.change_img(btn)
         self.blackout()
-        self.loop.create_task(self.camEnable(1,''))
+        self.loop.create_task(self.camEnable(7,''))
         for scen in self.scenaries:
             scen["state"] = "disable"
         self.btnScenary["state"] = "disable"
@@ -666,7 +666,7 @@ class Window(Tk):
     async def scenary_action_3(self, btn):
         self.change_img(btn)
         self.blackout()
-        self.loop.create_task(self.camEnable(2,''))
+        self.loop.create_task(self.camEnable(1,''))
         for scen in self.scenaries:
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
@@ -733,7 +733,7 @@ class Window(Tk):
     async def scenary_action_4(self, btn):
         self.change_img(btn)
         self.blackout()
-        self.loop.create_task(self.camEnable(3,''))
+        self.loop.create_task(self.camEnable(2,''))
         for scen in self.scenaries:
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
@@ -818,7 +818,7 @@ class Window(Tk):
 
     async def scenary_action_6(self, btn):
         self.change_img(btn)
-        self.loop.create_task(self.camEnable(5,''))
+        self.loop.create_task(self.camEnable(3,''))
         self.blackout()
         ###################
         await asyncio.sleep(2)
@@ -855,7 +855,7 @@ class Window(Tk):
 
     async def scenary_action_7(self, btn):
         self.change_img(btn)
-        self.loop.create_task(self.camEnable(6,''))
+        self.loop.create_task(self.camEnable(5,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
