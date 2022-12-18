@@ -236,9 +236,9 @@ class Window(Tk):
         self.btnDoor2 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
                                             lambda: self.loop.create_task(self.door(8, self.btnDoor2)), 0)
         self.btnDoor4 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(9, self.btnDoor4)), 0)
+                                            lambda: self.loop.create_task(self.door(10, self.btnDoor4)), 0)
         self.btnDoor3 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
-                                            lambda: self.loop.create_task(self.door(10, self.btnDoor3)), 0)
+                                            lambda: self.loop.create_task(self.door(9, self.btnDoor3)), 0)
         self.btnDoor1 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
                                             lambda: self.loop.create_task(self.door(7, self.btnDoor1)), 0)
         self.btnDoor6 = self.btn_father.btn(self.img_father.door, self.img_father.door_active,
@@ -274,19 +274,19 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.light(36, self.btnLight11)), 1)
 
         self.btnSmoke1 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.door(0, self.btnSmoke1)), 0)
+                                             lambda: self.loop.create_task(self.smoke(0, self.btnSmoke1)), 0)
         self.btnSmoke2 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.door(1, self.btnSmoke2)), 0)
+                                             lambda: self.loop.create_task(self.smoke(1, self.btnSmoke2)), 0)
         self.btnSmoke3 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.door(2, self.btnSmoke3)), 0)
+                                             lambda: self.loop.create_task(self.smoke(2, self.btnSmoke3)), 0)
         self.btnSmoke4 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.door(6, self.btnSmoke4)), 0)
+                                             lambda: self.loop.create_task(self.smoke(6, self.btnSmoke4)), 0)
         self.btnSmoke5 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.door(5, self.btnSmoke5)), 0)
+                                             lambda: self.loop.create_task(self.smoke(5, self.btnSmoke5)), 0)
         self.btnSmoke6 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.door(4, self.btnSmoke6)), 0)
+                                             lambda: self.loop.create_task(self.smoke(4, self.btnSmoke6)), 0)
         self.btnSmoke7 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.door(3, self.btnSmoke7)), 0)
+                                             lambda: self.loop.create_task(self.smoke(3, self.btnSmoke7)), 0)
 
         self.btnCam1 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(0, self.btnCam1)), 0)
@@ -312,11 +312,11 @@ class Window(Tk):
         self.btnFire3 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
                                             lambda: self.loop.create_task(self.fireSingle(14, self.btnFire3)), 0)
         self.btnFire5 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fireSingle(10, self.btnFire5)), 0)
+                                            lambda: self.loop.create_task(self.fire(10, 8, self.btnFire5)), 0)
         self.btnFire4 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
                                             lambda: self.loop.create_task(self.fireSingle(13, self.btnFire4)), 0)
         self.btnFire6 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fire(10,8, self.btnFire6)), 0)
+                                            lambda: self.loop.create_task(self.fireSingle(23, self.btnFire6)), 0)
         self.btnFire7 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
                                             lambda: self.loop.create_task(self.fire(23, self.btnFire7)), 0)
 
@@ -573,45 +573,37 @@ class Window(Tk):
 
     async  def scenary_action_1(self, btn):
         self.change_img(btn)
-        self.loop.create_task(self.camEnable(4,''))
+        #self.loop.create_task(self.camEnable(4,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
         ##############
-        await asyncio.sleep(5)
-        self.fireSerial(34, 63)
-        await asyncio.sleep(.1)
-        self.ledSerial('LEDWRITE', 12, 255)
-        await asyncio.sleep(5)
-        self.ledSerial('LEDWRITE', 34, 0)
-        await asyncio.sleep(.1)
-        self.ledSerial('LEDWRITE', 12, 0)
         await asyncio.sleep(2)
-        self.fireSerial(16,31)
-        await asyncio.sleep(.1)
-        self.smokeSerial(6)
-        await asyncio.sleep(5)
-        self.blink(26, 200, 200)
-        await self.sound()
-        await asyncio.sleep(11)
-        self.servo('SERVOOPEN', 5)
-        await asyncio.sleep(1)
-        self.serialFan('FANON')
-        await asyncio.sleep(5)
-        await self.sound()
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 12, 150)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 16, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 31, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 26, 0)
+        self.ledSerial('LEDWRITE', 38, 255)
         await asyncio.sleep(10)
-        self.servo('SERVOCLOSE', 5)
-        await asyncio.sleep(.2)
-        self.serialFan('FANOFF')
+        self.ledSerial('LEDWRITE', 38, 0)
+        await asyncio.sleep(1)
+        self.fireSerialSingle(2)
+        await asyncio.sleep(1)
+        #TODO smoke
+        self.smokeSerial(0, btn.smoke1)
+        await asyncio.sleep(1)
+        self.blink(1, 200, 200)
+        await self.sound()
+        await asyncio.sleep(7)
+        self.servo('SERVOOPEN', 8)
+        await asyncio.sleep(1)
+        self.serialFan('FANON','1')
+        await asyncio.sleep(10)
+        await self.sound()
+        await asyncio.sleep(10)
+        self.ledSerial('LEDWRITE', 38, 255)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 1, 0)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 2, 0)
+        await asyncio.sleep(10)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
@@ -620,55 +612,50 @@ class Window(Tk):
 
     async def scenary_action_2(self, btn):
         self.change_img(btn)
-        self.loop.create_task(self.camEnable(3,''))#was1
         self.blackout()
         for scen in self.scenaries:
             scen["state"] = "disable"
         self.btnScenary["state"] = "disable"
         ##############
-        await asyncio.sleep(5)
-        self.ledSerial('LEDWRITE', 46, 255)
-        await asyncio.sleep(.1)
-        self.fireSerialSingle(39)
-        await asyncio.sleep(5)
-        self.ledSerial('LEDWRITE', 46, 0)
-        await asyncio.sleep(1)
-        self.fireSerial(38,42)
+        await asyncio.sleep(2)
+        self.ledSerial('LEDWRITE', 37, 255)
+        await asyncio.sleep(2)
+        self.blink(4, 400, 700)
         await asyncio.sleep(.3)
-        self.smokeSerial(8)
-        await asyncio.sleep(5)
-        self.blink(20, 200, 200)
-        await self.sound()
-        await asyncio.sleep(6)
-        self.smokeSerial(8)
-        await asyncio.sleep(9)
-        self.ledSerial('LEDWRITE', 21, 255)
-        await asyncio.sleep(.5)
-        self.ledSerial('LEDWRITE', 21, 0)
+        self.blink(5, 650, 300)
+        await asyncio.sleep(.1)
+        self.blink(6, 500, 900)
         await asyncio.sleep(10)
-        self.servo('SERVOOPEN', 1)
+        self.ledSerial('LEDWRITE', 37, 0)
+        await asyncio.sleep(.01)
+        self.ledSerial('LEDWRITE', 4, 0)
+        await asyncio.sleep(.2)
+        self.ledSerial('LEDWRITE', 5, 0)
+        await asyncio.sleep(.1)
+        self.ledSerial('LEDWRITE', 6, 0)
         await asyncio.sleep(1)
-        self.serialFan('FANON')
-        await asyncio.sleep(5)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 38, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 42, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 20, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 39, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 21, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 46, 150)
-        await asyncio.sleep(.2)
+        self.fireSerialSingle(3)
+        await asyncio.sleep(1)
+        #TODO smoke
+        self.smokeSerial(1, btn.smoke1)
+        await asyncio.sleep(1)
+        self.blink(7, 200, 200)
+        await self.sound()
+        await asyncio.sleep(7)
+        self.servo('SERVOOPEN', 7)
+        await asyncio.sleep(1)
+        self.servo('SERVOOPEN', 8)
+        await asyncio.sleep(1)
+        self.serialFan('FANON','1')
+        await asyncio.sleep(10)
         await self.sound()
         await asyncio.sleep(10)
-        self.serialFan('FANOFF')
-        await asyncio.sleep(.5)
-        self.servo('SERVOCLOSE', 1)
-        await asyncio.sleep(10)
+        self.ledSerial('LEDWRITE', 37, 255)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 7, 0)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 3, 0)
+        await asyncio.sleep(1)
         for scen in self.scenaries:
             scen["state"] = "active"
         self.btnScenary["state"] = "active"
@@ -678,42 +665,38 @@ class Window(Tk):
 
     async def scenary_action_3(self, btn):
         self.change_img(btn)
-        self.loop.create_task(self.camEnable(0,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
         ##############
-        await asyncio.sleep(5)
-        self.ledSerial('LEDWRITE', 8, 255)
-        self.fireSerial(40,63)
-        await asyncio.sleep(5)
-        self.fireSerial(41,63)
-        await asyncio.sleep(.1)
-        self.ledSerial('LEDWRITE', 8, 0)
-        await asyncio.sleep(.3)
-        self.smokeSerial(10)
-        await asyncio.sleep(5)
-        self.blink(24, 200, 200)
-        await self.sound()
-        await asyncio.sleep(11)
-        self.servo('SERVOOPEN', 2)
+        await asyncio.sleep(2)
+        self.ledSerial('LEDWRITE', 34, 255)
+        await asyncio.sleep(10)
+        self.ledSerial('LEDWRITE', 34, 0)
         await asyncio.sleep(1)
-        self.serialFan('FANON')
-        await asyncio.sleep(5)
-        await self.sound()
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 8, 150)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 41, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 40, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 24, 0)
-        await asyncio.sleep(12)
-        self.serialFan('FANOFF')
+        self.fireSerialSingle(14)
         await asyncio.sleep(1)
-        self.servo('SERVOCLOSE', 2)
+        #TODO smoke
+        self.smokeSerial(2, btn.smoke1)
+        await asyncio.sleep(1)
+        self.blink(15, 200, 200)
+        await self.sound()
+        await asyncio.sleep(7)
+        self.servo('SERVOOPEN', 10)
+        await asyncio.sleep(1)
+        self.servo('SERVOOPEN', 9)
+        await asyncio.sleep(1)
+        self.serialFan('FANON','1')
+        await asyncio.sleep(10)
+        await self.sound()
+        await asyncio.sleep(10)
+        self.ledSerial('LEDWRITE', 34, 255)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 15, 0)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 14, 0)
+        await asyncio.sleep(10)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
@@ -748,51 +731,36 @@ class Window(Tk):
 
     async def scenary_action_4(self, btn):
         self.change_img(btn)
-        self.loop.create_task(self.camEnable(2,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
         ##############
-        await asyncio.sleep(5)
-        self.ledSerial('LEDWRITE', 13, 255)
+        await asyncio.sleep(2)
+        self.ledSerial('LEDWRITE', 35, 255)
+        await asyncio.sleep(10)
+        self.ledSerial('LEDWRITE', 35, 0)
         await asyncio.sleep(1)
-        self.fireSerial(18,43)
+        self.fireSerialSingle(13)
         await asyncio.sleep(1)
-        self.ledSerial('LEDWRITE', 54, 255)
-        await asyncio.sleep(5)
-        self.ledSerial('LEDWRITE', 13, 0)
-        await asyncio.sleep(.1)
-        self.fireSerialSingle(22)
-        await asyncio.sleep(5)
-        self.smokeSerial(9)
-        await asyncio.sleep(5)
-        self.blink(27, 200, 200)
+        #TODO smoke
+        self.smokeSerial(6, btn.smoke1)
+        await asyncio.sleep(1)
+        self.blink(12, 200, 200)
         await self.sound()
         await asyncio.sleep(7)
-        self.ledSerial('LEDWRITE', 54, 0)
-        await asyncio.sleep(10)
-        self.servo('SERVOOPEN', 4)
+        self.servo('SERVOOPEN', 10)
         await asyncio.sleep(1)
-        self.serialFan('FANON')
-        await asyncio.sleep(5)
+        self.serialFan('FANON','1')
+        await asyncio.sleep(10)
         await self.sound()
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 13, 150)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 22, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 27, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 54, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 18, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 43, 0)
         await asyncio.sleep(10)
-        self.serialFan('FANOFF')
+        self.ledSerial('LEDWRITE', 35, 255)
         await asyncio.sleep(1)
-        self.servo('SERVOCLOSE', 4)
+        self.ledSerial('LEDWRITE', 13, 0)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 34, 0)
+        await asyncio.sleep(10)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
@@ -801,49 +769,92 @@ class Window(Tk):
 
     async def scenary_action_5(self, btn):
         self.change_img(btn)
-        self.loop.create_task(self.camEnable(1,''))
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
         ##############
-        await asyncio.sleep(5)
-        self.ledSerial('LEDWRITE', 4, 255)
-        await asyncio.sleep(1)
-        self.fireSerialSingle(37)
-        await asyncio.sleep(6)
-        self.ledSerial('LEDWRITE', 4, 0)
-        await asyncio.sleep(.1)
-        self.ledSerial('LEDWRITE', 37, 0)
-        self.fireSerial(35,53)
-        await asyncio.sleep(3)
-        self.smokeSerial(7)
-        await asyncio.sleep(5)
-        self.blink(36, 200, 200)
-        await self.sound()
-        await asyncio.sleep(14)
-        self.servo('SERVOOPEN', 3)
-        await asyncio.sleep(1)
-        self.serialFan('FANON')
-        await asyncio.sleep(5)
-        await self.sound()
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 4, 150)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 36, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 35, 0)
-        await asyncio.sleep(.2)
-        self.ledSerial('LEDWRITE', 53, 0)
+        print('dwad')
+        await asyncio.sleep(2)
+        self.ledSerial('LEDWRITE', 47, 255)
         await asyncio.sleep(10)
-        self.serialFan('FANOFF')
+        self.ledSerial('LEDWRITE', 47, 0)
         await asyncio.sleep(1)
-        self.servo('SERVOCLOSE', 3)
+        self.fireSerialSingle(8)
+        await asyncio.sleep(3)
+        await self.sound()
+        self.blink(11, 200, 200)
+        await asyncio.sleep(7)
+        self.ledSerial('LEDWRITE', 10, 255)
+        await asyncio.sleep(.9)
+        self.ledSerial('LEDWRITE', 10, 0)
+        #TODO smoke
+        await asyncio.sleep(1)
+        self.smokeSerial(5, btn.smoke1)
+        await asyncio.sleep(7)
+        #TODO change door
+        self.servo('SERVOOPEN', 10)
+        await asyncio.sleep(1)
+        self.serialFan('FANON','1')
+        await asyncio.sleep(10)
+        await self.sound()
+        await asyncio.sleep(10)
+        self.ledSerial('LEDWRITE', 47, 255)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 8, 0)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 11, 0)
+        await asyncio.sleep(10)
         for scen in self.scenaries:
             scen["state"]="active"
         self.btnScenary["state"] = "active"
         self.default()
         self.change_img(btn)
+
+    async def scenary_action_6(self, btn):
+        self.change_img(btn)
+        self.loop.create_task(self.camEnable(1,''))
+        self.blackout()
+        ###################
+        await asyncio.sleep(2)
+        self.ledSerial('LEDWRITE', 33, 255)
+        await asyncio.sleep(10)
+        self.ledSerial('LEDWRITE', 33, 0)
+        await asyncio.sleep(1)
+        self.fireSerialSingle(23)
+        await asyncio.sleep(3)
+        await self.sound()
+        self.blink(22, 200, 200)
+        await asyncio.sleep(7)
+        #TODO smoke
+        self.smokeSerial(4, btn.smoke1)
+        await asyncio.sleep(7)
+        #TODO change door
+        self.servo('SERVOOPEN', 10)
+        await asyncio.sleep(1)
+        self.serialFan('FANON','1')
+        await asyncio.sleep(10)
+        await self.sound()
+        await asyncio.sleep(10)
+        self.ledSerial('LEDWRITE', 33, 255)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 22, 0)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 23, 0)
+        await asyncio.sleep(10)
+        for scen in self.scenaries:
+            scen["state"]="active"
+        self.btnScenary["state"] = "active"
+        self.default()
+        self.change_img(btn)
+
+    async def scenary_action_7(self, btn):
+        self.change_img(btn)
+        self.loop.create_task(self.camEnable(1,''))
+        self.blackout()
+        for scen in self.scenaries:
+            scen["state"]="disable"
+        self.btnScenary["state"] = "disable"
 
     async def new(self):
         self.scenary = Toplevel()
@@ -871,11 +882,11 @@ class Window(Tk):
         self.scenary4.place(x=520, y=100)  # floor 3 l
 
         self.scenary5 = self.btn_father_sc.btn(self.img_father.scenary_5, self.img_father.scenary_active_5,
-                                            lambda: self.loop.create_task(self.scenary_action_5(self.scenary5)), 0, 400, 50)
+                                            lambda: self.loop.create_task(self.scenary_action_7(self.scenary5)), 0, 400, 50)
         self.scenary5.place(x=300, y=300)  # floor 3 l
 
         self.scenary6 = self.btn_father_sc.btn(self.img_father.scenary_6, self.img_father.scenary_active_6,
-                                            lambda: self.loop.create_task(self.scenary_action_5(self.scenary6)), 0, 400, 50)
+                                            lambda: self.loop.create_task(self.scenary_action_6(self.scenary6)), 0, 400, 50)
 
         self.scenary6.place(x=520, y=240)  # floor 3 l
 
@@ -883,7 +894,7 @@ class Window(Tk):
                                             lambda: self.loop.create_task(self.scenary_action_5(self.scenary7)), 0, 400, 50)
         self.scenary7.place(x=520, y=170)  # floor 3 l
 
-        self.scenaries = [self.scenary1, self.scenary2, self.scenary3, self.scenary4, self.scenary5]
+        self.scenaries = [self.scenary1, self.scenary2, self.scenary3, self.scenary4, self.scenary5, self.scenary6, self.scenary7]
 
         self.btnScenary = self.btn_father_sc.btn(self.img_father.scenary_btn,self.img_father.scenary_btn,
                                                  lambda: self.loop.create_task(self.scenary_close()), 0, 222, 46)
