@@ -317,7 +317,7 @@ class Window(Tk):
         self.btnFire6 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
                                             lambda: self.loop.create_task(self.fireSingle(23, self.btnFire6)), 0)
         self.btnFire7 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
-                                            lambda: self.loop.create_task(self.fire(23, self.btnFire7)), 0)
+                                            lambda: [self.loop.create_task(self.fire(27, 29, self.btnFire7)), self.loop.create_task(self.fireSingle(30, self.btnFire7))], 0)
 
         self.btnAlarm1 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
                                              lambda: [self.loop.create_task(self.alarm(7, self.btnAlarm1)), self.loop.create_task(self.sound())], 0)
@@ -332,7 +332,7 @@ class Window(Tk):
         self.btnAlarm6 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
                                              lambda: [self.loop.create_task(self.alarm(0, self.btnAlarm6)), self.loop.create_task(self.sound())], 0)
         self.btnAlarm7 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
-                                             lambda: [self.loop.create_task(self.alarm(22, self.btnAlarm7)), self.loop.create_task(self.fireFighterSound())], 0)
+                                             lambda: [self.loop.create_task(self.alarm(28, self.btnAlarm7)), self.loop.create_task(self.fireFighterSound(),self.loop.create_task(self.alarm(31, self.btnAlarm7)) )], 0)
         self.btnAlarm8 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
                                              lambda: [self.loop.create_task(self.alarm(0, self.btnAlarm8)), self.loop.create_task(self.sound())], 0)
         self.btnAlarm9 = self.btn_father.btn(self.img_father.alarm, self.img_father.alarm_active,
@@ -637,7 +637,6 @@ class Window(Tk):
         self.fireSerialSingle(3)
         await asyncio.sleep(1)
         #TODO smoke
-        self.smokeSerial(1)
         await asyncio.sleep(1)
         self.blink(7, 200, 200)
         await self.sound()
@@ -859,6 +858,39 @@ class Window(Tk):
         self.blackout()
         for scen in self.scenaries:
             scen["state"]="disable"
+        await asyncio.sleep(2)
+        self.ledSerial('LEDWRITE', 48, 255)
+        await asyncio.sleep(2)
+        self.fireSerialSingle(30)
+        await asyncio.sleep(10)
+        self.smokeSerial(6)
+        await asyncio.sleep(4)
+        self.fireSerialSingle(27)
+        await asyncio.sleep(7)
+        self.fireSerialSingle(29)
+        await asyncio.sleep(1)
+        #TODO smoke
+        await asyncio.sleep(1)
+        await self.fireFighterSound()
+        await asyncio.sleep(1)
+        self.blink(31, 200, 200)
+        await asyncio.sleep(.3)
+        self.blink(28, 200, 200)
+        await asyncio.sleep(10)
+        self.serialFan('FANON','2')
+        await asyncio.sleep(10)
+        await self.fireFighterSound()
+        await asyncio.sleep(10)
+        self.ledSerial('LEDWRITE', 30, 0)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 27, 0)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 29, 0)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 31, 0)
+        await asyncio.sleep(1)
+        self.ledSerial('LEDWRITE', 28, 0)
+        await asyncio.sleep(10)
         self.btnScenary["state"] = "disable"
         self.default()
         self.change_img(btn)
