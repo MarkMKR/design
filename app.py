@@ -421,7 +421,7 @@ class Window(Tk):
         self.cams = [self.btnCam6,self.btnCam5, self.btnCam4, self.btnCam3, self.btnCam2, self.btnCam1]
         self.smokes = [self.btnSmoke5, self.btnSmoke4, self.btnSmoke3, self.btnSmoke2, self.btnSmoke1]
     def smokeSerial(self, param1):
-        string = "<SMOKE" + "\0" + str(param1) + ">"
+        string = "<SMOKE" + "\0" + str(param1) + "\0" + "5000" + ">"
         print(string)
         self.arduino.write(bytes(string, 'utf-8'))
         data = self.arduino.read_all()
