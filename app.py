@@ -185,7 +185,7 @@ class Window(Tk):
         self.root.config(background='#ffffff')
         self.keyboard = Controller()
         self.root.geometry("%dx%d" % (1024, 600))
-        #self.arduino = serial.Serial(port='COM9', baudrate=57600)
+        self.arduino = serial.Serial(port='COM9', baudrate=57600)
         # while True:
         #     id = input('id')
         #     self.blackout()
@@ -593,7 +593,7 @@ class Window(Tk):
         await asyncio.sleep(1)
         #TODO smoke
         self.smokeSerial(0)
-        await asyncio.sleep(1)
+        await asyncio.sleep(3)
         self.blink(1, 200, 200)
         await self.sound()
         await asyncio.sleep(7)
@@ -643,7 +643,8 @@ class Window(Tk):
         self.fireSerialSingle(3)
         await asyncio.sleep(1)
         #TODO smoke
-        await asyncio.sleep(1)
+        self.smokeSerial(1)
+        await asyncio.sleep(3)
         self.blink(7, 200, 200)
         await self.sound()
         await asyncio.sleep(7)
@@ -685,7 +686,7 @@ class Window(Tk):
         await asyncio.sleep(1)
         #TODO smoke
         self.smokeSerial(2)
-        await asyncio.sleep(1)
+        await asyncio.sleep(3)
         self.blink(15, 200, 200)
         await self.sound()
         await asyncio.sleep(7)
@@ -752,7 +753,7 @@ class Window(Tk):
         await asyncio.sleep(1)
         #TODO smoke
         self.smokeSerial(6)
-        await asyncio.sleep(1)
+        await asyncio.sleep(3)
         self.blink(12, 200, 200)
         await self.sound()
         await asyncio.sleep(7)
@@ -790,6 +791,8 @@ class Window(Tk):
         await asyncio.sleep(1)
         self.fireSerialSingle(8)
         await asyncio.sleep(3)
+        self.smokeSerial(5)
+        await asyncio.sleep(3)
         await self.sound()
         self.blink(11, 200, 200)
         await asyncio.sleep(7)
@@ -798,7 +801,6 @@ class Window(Tk):
         self.ledSerial('LEDWRITE', 10, 0)
         #TODO smoke
         await asyncio.sleep(1)
-        self.smokeSerial(5)
         await asyncio.sleep(7)
         #TODO change door
         self.servo('SERVOOPEN', 12)
@@ -836,12 +838,12 @@ class Window(Tk):
         await asyncio.sleep(1)
         self.fireSerialSingle(23)
         await asyncio.sleep(3)
+        self.smokeSerial(4)
+        await asyncio.sleep(3)
         await self.sound()
         self.blink(22, 200, 200)
         await asyncio.sleep(7)
         #TODO smoke
-        self.smokeSerial(4)
-        await asyncio.sleep(7)
         #TODO change door
         self.servo('SERVOOPEN', 14)
         await asyncio.sleep(1)
@@ -873,7 +875,7 @@ class Window(Tk):
         self.ledSerial('LEDWRITE', 48, 0)
         self.fireSerialSingle(30)
         await asyncio.sleep(10)
-        self.smokeSerial(6, 10000)
+        self.smokeSerial(3, 10000)
         await asyncio.sleep(4)
         self.fireSerialSingle(27)
         await asyncio.sleep(7)
