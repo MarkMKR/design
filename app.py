@@ -483,6 +483,10 @@ class Window(Tk):
         print(data.decode())
 
     def serialFan(self, comand, id):
+        status = 0 if self.btnFan1.status == 0 else 1
+        servoComand = 'SERVOOPEN' if comand == 'FANON' else 'SERVOCLOSE'
+        if id == 1:
+            self.servo(servoComand, 11)
         string = f"<{comand}"+ "\0" + id+">"
         print(string)
         self.arduino.write(bytes(string, 'utf-8'))
