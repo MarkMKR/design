@@ -185,7 +185,7 @@ class Window(Tk):
         self.root.config(background='#ffffff')
         self.keyboard = Controller()
         self.root.geometry("%dx%d" % (1024, 600))
-        self.arduino = serial.Serial(port='COM9', baudrate=57600)
+        self.arduino = serial.Serial(port='COM6', baudrate=57600)
         # while True:
         #     id = input('id')
         #     self.blackout()
@@ -484,8 +484,9 @@ class Window(Tk):
 
     def serialFan(self, comand, id):
         status = 0 if self.btnFan1.status == 0 else 1
+        print(id)
         servoComand = 'SERVOOPEN' if comand == 'FANON' else 'SERVOCLOSE'
-        if id == 1:
+        if id == '1':
             self.servo(servoComand, 11)
         string = f"<{comand}"+ "\0" + id+">"
         print(string)
@@ -824,6 +825,9 @@ class Window(Tk):
         self.change_img(btn)
         self.loop.create_task(self.camEnable(2,''))
         self.blackout()
+        for scen in self.scenaries:
+            scen["state"]="disable"
+        self.btnScenary["state"] = "disable"
         ###################
         await asyncio.sleep(2)
         self.ledSerial('LEDWRITE', 33, 255)
@@ -899,7 +903,9 @@ class Window(Tk):
         await asyncio.sleep(1)
         self.ledSerial('LEDWRITE', 48, 255)
         await asyncio.sleep(10)
-        self.btnScenary["state"] = "disable"
+        for scen in self.scenaries:
+            scen["state"] = "active"
+        self.btnScenary["state"] = "active"
         self.default()
         self.change_img(btn)
 
