@@ -274,9 +274,9 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.light(36, self.btnLight11)), 1)
 
         self.btnSmoke1 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(0, self.btnSmoke1)), 0)
+                                             lambda: self.loop.create_task(self.smoke(1, self.btnSmoke1)), 0)
         self.btnSmoke2 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
-                                             lambda: self.loop.create_task(self.smoke(1, self.btnSmoke2)), 0)
+                                             lambda: self.loop.create_task(self.smoke(0, self.btnSmoke2)), 0)
         self.btnSmoke3 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
                                              lambda: self.loop.create_task(self.smoke(2, self.btnSmoke3)), 0)
         self.btnSmoke4 = self.btn_father.btn(self.img_father.smoke, self.img_father.smoke_active,
@@ -592,7 +592,7 @@ class Window(Tk):
         self.fireSerialSingle(2)
         await asyncio.sleep(1)
         #TODO smoke
-        self.smokeSerial(0)
+        self.smokeSerial(1)
         await asyncio.sleep(3)
         self.blink(1, 200, 200)
         await self.sound()
@@ -643,7 +643,7 @@ class Window(Tk):
         self.fireSerialSingle(3)
         await asyncio.sleep(1)
         #TODO smoke
-        self.smokeSerial(1)
+        self.smokeSerial(0)
         await asyncio.sleep(3)
         self.blink(7, 200, 200)
         await self.sound()
