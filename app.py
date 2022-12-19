@@ -185,7 +185,7 @@ class Window(Tk):
         self.root.config(background='#ffffff')
         self.keyboard = Controller()
         self.root.geometry("%dx%d" % (1024, 600))
-        self.arduino = serial.Serial(port='COM9', baudrate=57600)
+        #self.arduino = serial.Serial(port='COM9', baudrate=57600)
         # while True:
         #     id = input('id')
         #     self.blackout()
@@ -421,7 +421,7 @@ class Window(Tk):
         self.cams = [self.btnCam6,self.btnCam5, self.btnCam4, self.btnCam3, self.btnCam2, self.btnCam1, self.btnCam7, self.btnCam8]
         self.smokes = [self.btnSmoke5, self.btnSmoke4, self.btnSmoke3, self.btnSmoke2, self.btnSmoke1, self.btnSmoke6, self.btnSmoke7]
     def smokeSerial(self, param1, time = 5000):
-        string = "<SMOKE" + "\0" + str(param1) + "\0" + time + ">"
+        string = "<SMOKE" + "\0" + str(param1) + "\0" + str(time) + ">"
         print(string)
         self.arduino.write(bytes(string, 'utf-8'))
         data = self.arduino.read_all()
