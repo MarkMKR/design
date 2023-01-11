@@ -618,7 +618,7 @@ class Window(Tk):
     async def scenary_action_2(self, btn):
         self.change_img(btn)
         self.blackout()
-        self.loop.create_task(self.camEnable(7,''))
+        self.loop.create_task(self.camEnable(6,''))
         for scen in self.scenaries:
             scen["state"] = "disable"
         self.btnScenary["state"] = "disable"
@@ -672,7 +672,7 @@ class Window(Tk):
     async def scenary_action_3(self, btn):
         self.change_img(btn)
         self.blackout()
-        self.loop.create_task(self.camEnable(6,''))
+        self.loop.create_task(self.camEnable(5,''))
         for scen in self.scenaries:
             scen["state"]="disable"
         self.btnScenary["state"] = "disable"
