@@ -289,13 +289,13 @@ class Window(Tk):
                                              lambda: self.loop.create_task(self.smoke(3, self.btnSmoke7, 10000)), 0)
 
         self.btnCam1 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(7, self.btnCam1)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(6, self.btnCam1)), 0)
         self.btnCam2 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(3, self.btnCam2)), 0)
         self.btnCam3 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(6, self.btnCam3)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(7, self.btnCam3)), 0)
         self.btnCam4 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(5, self.btnCam4)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(4, self.btnCam4)), 0)
         self.btnCam5 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(1, self.btnCam5)), 0)
         self.btnCam6 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
@@ -303,7 +303,7 @@ class Window(Tk):
         self.btnCam7 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
                                            lambda: self.loop.create_task(self.camEnable(0, self.btnCam7)), 0)
         self.btnCam8 = self.btn_father.btn(self.img_father.cam, self.img_father.cam_active,
-                                           lambda: self.loop.create_task(self.camEnable(4, self.btnCam8)), 0)
+                                           lambda: self.loop.create_task(self.camEnable(5, self.btnCam8)), 0)
 
         self.btnFire1 = self.btn_father.btn(self.img_father.fire, self.img_father.fire_active,
                                             lambda: self.loop.create_task(self.fireSingle(3, self.btnFire1)), 0)
@@ -400,7 +400,7 @@ class Window(Tk):
         self.btnAlarm7.place(x=100, y=190)
         self.btnSmoke7.place(x=155, y=245)
         self.btnFire7.place(x=210, y=245)
-        self.btnCam8.place(x=100, y=245)
+        #self.btnCam8.place(x=100, y=245)
 
         self.btnDoor6.place(x=900, y=465)
 
