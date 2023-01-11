@@ -373,13 +373,6 @@ class Window(Tk):
         self.btnSmoke3.place(x=780, y=220)
         self.btnFire3.place(x=835, y=220)
 
-        self.btnCam4.place(x=560, y=285)
-        self.btnDoor4.place(x=615, y=285)
-        self.btnLight4.place(x=670, y=285)
-        self.btnAlarm4.place(x=725, y=285)
-        self.btnSmoke4.place(x=780, y=285)
-        self.btnFire4.place(x=835, y=285)
-
         self.btnCam5.place(x=560, y=465)
         self.btnDoor5.place(x=615, y=465)
         self.btnLight5.place(x=670, y=465)
@@ -932,13 +925,9 @@ class Window(Tk):
                                             lambda: self.loop.create_task(self.scenary_action_3(self.scenary3)), 0, 400, 50)
         self.scenary3.place(x=100, y=240)  # floor 3 l
 
-        self.scenary4 = self.btn_father_sc.btn(self.img_father.scenary_4, self.img_father.scenary_active_4,
-                                            lambda: self.loop.create_task(self.scenary_action_4(self.scenary4)), 0, 400, 50)
-        self.scenary4.place(x=520, y=100)  # floor 3 l
-
         self.scenary5 = self.btn_father_sc.btn(self.img_father.scenary_5, self.img_father.scenary_active_5,
                                             lambda: self.loop.create_task(self.scenary_action_7(self.scenary5)), 0, 400, 50)
-        self.scenary5.place(x=300, y=300)  # floor 3 l
+        self.scenary5.place(x=520, y=100)  # floor 3 l
 
         self.scenary6 = self.btn_father_sc.btn(self.img_father.scenary_6, self.img_father.scenary_active_6,
                                             lambda: self.loop.create_task(self.scenary_action_6(self.scenary6)), 0, 400, 50)
@@ -949,7 +938,7 @@ class Window(Tk):
                                             lambda: self.loop.create_task(self.scenary_action_5(self.scenary7)), 0, 400, 50)
         self.scenary7.place(x=520, y=170)  # floor 3 l
 
-        self.scenaries = [self.scenary1, self.scenary2, self.scenary3, self.scenary4, self.scenary5, self.scenary6, self.scenary7]
+        self.scenaries = [self.scenary1, self.scenary2, self.scenary3, self.scenary5, self.scenary6, self.scenary7]
 
         self.btnScenary = self.btn_father_sc.btn(self.img_father.scenary_btn,self.img_father.scenary_btn,
                                                  lambda: self.loop.create_task(self.scenary_close()), 0, 222, 46)
